@@ -13,10 +13,6 @@ const CONFIG = {
 
 const SCROLL_LENGTH_VH = 150;
 
-// جهاز لمس (موبايل/تابلت) ولا لأ — بيحدد إذا رح نسمح بإعادة الحساب
-// التلقائية عند تغيّر حجم الشاشة (شريط عنوان المتصفح بيغيّرها باستمرار
-// على الموبايل، وأي إعادة حساب أثناء اللمس فعلياً بترجّع السكرول لبداية
-// الصفحة على iOS Safari — مشكلة معروفة).
 const IS_TOUCH_DEVICE = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
 function getFramePath(index) {
@@ -92,14 +88,6 @@ function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  // الحل الموثّق من GSAP لمشكلة "رجوع السكرول للبداية" على iOS Safari
-  // عند استخدام pin. متوافقة هلق لأننا نستخدم pin:true (fixed) مش sticky.
-  if (ScrollTrigger.isTouch) {
-    ScrollTrigger.normalizeScroll(true);
-  }
-
-  // رقم ثابت يتحسب مرة وحدة بس عند التحميل — مش دالة تتحسب من جديد
-  // كل مرة، حتى ما يصير أي تغيير بطول الصفحة أثناء اللمس
   const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
 
   gsap.to(playhead, {
@@ -109,6 +97,8 @@ function initScrollAnimation() {
     scrollTrigger: {
       trigger: "#laptop-section",
       pin: true,
+      pinType: "transform", // بديل عن position:fixed — أكثر استقراراً على iOS
+                              // Safari لأنه ما بيتأثر بحساب شريط عنوان المتصفح
       start: "top top",
       end: "+=" + scrollEndPx,
       scrub: 0.15,
@@ -123,9 +113,6 @@ function initScrollAnimation() {
    ============================================ */
 let resizeTimeout;
 function handleResize() {
-  // على أجهزة اللمس (موبايل/تابلت) ما منعمل أي إعادة حساب تلقائية
-  // إطلاقاً — لأنها هي بالضبط سبب رجوع السكرول للبداية أثناء اللمس.
-  // بيكفي تحديث الكانفس البصري بس بدون لمس مقاييس GSAP.
   if (IS_TOUCH_DEVICE) {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(resizeCanvas, 150);
