@@ -92,6 +92,12 @@ function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
 
+  // الحل الموثّق من GSAP لمشكلة "رجوع السكرول للبداية" على iOS Safari
+  // عند استخدام pin. متوافقة هلق لأننا نستخدم pin:true (fixed) مش sticky.
+  if (ScrollTrigger.isTouch) {
+    ScrollTrigger.normalizeScroll(true);
+  }
+
   // رقم ثابت يتحسب مرة وحدة بس عند التحميل — مش دالة تتحسب من جديد
   // كل مرة، حتى ما يصير أي تغيير بطول الصفحة أثناء اللمس
   const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
