@@ -24,37 +24,20 @@
   <link rel="stylesheet" href="css/content/resume.css" />
   <link rel="stylesheet" href="css/content/contact.css" />
 </head>
-
-<div id="debug-overlay" style="position:fixed;top:8px;left:8px;z-index:99999;background:rgba(0,0,0,0.85);color:#0f0;font-family:monospace;font-size:12px;padding:6px 10px;border-radius:6px;pointer-events:none;">
-  scrollY: -- | progress: --
-</div>
-
-<script>
-  window.addEventListener('scroll', () => {
-    const el = document.getElementById('debug-overlay');
-    if (el) {
-      const st = window.ScrollTrigger && ScrollTrigger.getAll()[0];
-      const progress = st ? st.progress.toFixed(3) : 'n/a';
-      el.textContent = `scrollY: ${Math.round(window.scrollY)} | progress: ${progress}`;
-    }
-  });
-</script>
 <body>
 
-<section class="laptop-section" id="laptop-section">
-    <canvas id="laptop-canvas"></canvas>
+  <section class="laptop-section" id="laptop-section">
+    <div class="laptop-sticky">
+      <canvas id="laptop-canvas"></canvas>
 
-    <!-- Windows-style interactive desktop — appears once the animation finishes -->
-    <div class="desktop-overlay" id="desktop-overlay">
-      <div class="desktop-icons" id="desktop-icons"></div>
-      <div class="desktop-backdrop" id="desktop-backdrop"></div>
-      <div class="desktop-windows" id="desktop-windows"></div>
+      <!-- Windows-style interactive desktop — appears once the animation finishes -->
+      <div class="desktop-overlay" id="desktop-overlay">
+        <div class="desktop-icons" id="desktop-icons"></div>
+        <div class="desktop-backdrop" id="desktop-backdrop"></div>
+        <div class="desktop-windows" id="desktop-windows"></div>
+      </div>
     </div>
   </section>
-
-  <!-- GSAP + ScrollTrigger (CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <script src="js/scrollAnimation.js"></script>
 
@@ -67,9 +50,5 @@
   <script src="js/content/contact.js"></script>
 
   <script src="js/desktop.js"></script>
-
-  <!-- مؤقت للتشخيص فقط — رح نشيله بعد ما نحل المشكلة -->
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
 </body>
 </html>

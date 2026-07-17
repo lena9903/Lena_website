@@ -2,15 +2,21 @@ body {
   background-color: var(--color-bg);
 }
 
-/* GSAP نفسها هلق بتتحكم بالتثبيت وبطول مسافة السكرول (pin: true بملف
-   scrollAnimation.js) — ما عاد في داعي لارتفاع يدوي بوحدة vh ولا sticky،
-   وهاد بالضبط اللي بيحل مشكلة شريط عنوان المتصفح على الموبايل */
+/* ارتفاع هاد القسم هو يلي بيحدد طول مسافة السكرول الكاملة للأنيميشن.
+   القيمة 250vh تعني: 100vh بتضل الشاشة نفسها، والـ 150vh الباقية
+   هي مسافة السكرول الفعلية اللي بتشغّل الأنيميشن. */
 .laptop-section {
   position: relative;
+  height: 250vh;
+  background-color: var(--color-bg);
+}
+
+.laptop-sticky {
+  position: sticky;
+  top: 0;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background-color: var(--color-bg);
 }
 
 #laptop-canvas {

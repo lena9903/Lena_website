@@ -408,20 +408,17 @@ function focusWindow(id) {
 
 /* ---------- Show/hide overlay once the animation is fully finished ---------- */
 function initDesktopScrollWatcher() {
-  if (!window.ScrollTrigger) return;
-
-  const scrollEndPx = window.innerHeight * 1.5; // نفس نسبة SCROLL_LENGTH_VH (150%)
-
-  ScrollTrigger.create({
-    trigger: "#laptop-section",
-    start: "top top",
-    end: "+=" + scrollEndPx,
-    onUpdate: (self) => {
-      const isComplete = self.progress >= 0.99;
+  // بيقرأ نسبة التقدم مباشرة من scrollAnimation.js (بدون أي مكتبة خارجية)
+  window.addEventListener(
+    "scroll",
+    () => {
+      const progress = window.laptopScrollProgress || 0;
+      const isComplete = progress >= 0.99;
       overlayEl.classList.toggle("is-active", isComplete);
       if (isComplete) positionOverlay();
     },
-  });
+    { passive: true }
+  );
 }
 
 /* ---------- Init ---------- */

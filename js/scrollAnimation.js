@@ -1,5 +1,8 @@
 /* ============================================
    Laptop Opening — Scroll-Scrubbed Frame Sequence
+   (Pure vanilla JS — no external library, no "pin" magic.
+   This sidesteps the GSAP ScrollTrigger + iOS Safari
+   conflicts entirely.)
    ============================================ */
 
 const CONFIG = {
@@ -11,8 +14,6 @@ const CONFIG = {
   bgColor: "#0b0b0c",
 };
 
-const SCROLL_LENGTH_VH = 150;
-
 function getFramePath(index) {
   const num = String(index).padStart(CONFIG.frameDigits, "0");
   return `${CONFIG.frameFolder}/${CONFIG.framePrefix}${num}${CONFIG.frameExt}`;
@@ -20,12 +21,17 @@ function getFramePath(index) {
 
 const canvas = document.getElementById("laptop-canvas");
 const ctx = canvas.getContext("2d");
+const laptopSection = document.getElementById("laptop-section");
 
 const images = [];
-const playhead = { frame: 0 };
 
 let canvasWidth = 0;
 let canvasHeight = 0;
+let currentFrameIndex = 0;
+
+// آخر نسبة تقدم محسوبة (0 لـ 1) — متاحة عالمياً حتى desktop.js
+// يقدر يعرف متى خلصت الأنيميشن بدون أي مكتبة وسيطة
+window.laptopScrollProgress = 0;
 
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
@@ -36,7 +42,7 @@ function resizeCanvas() {
   canvas.height = canvasHeight * dpr;
 
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  drawFrame(Math.round(playhead.frame));
+  drawFrame(currentFrameIndex);
 }
 
 function drawFrame(index) {
@@ -82,52 +88,52 @@ function preloadImages(onFirstFrameReady) {
   }
 }
 
-function initScrollAnimation() {
-  gsap.registerPlugin(ScrollTrigger);
+/* ---------- Scroll-linked progress (no library) ---------- */
 
-  ScrollTrigger.config({
-    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
-  });
+function getScrollProgress() {
+  const rect = laptopSection.getBoundingClientRect();
+  const totalScrollable = laptopSection.offsetHeight - window.innerHeight;
+  if (totalScrollable <= 0) return 1;
 
-  // الحل الرسمي من GSAP لمشكلة "رجوع السكرول للبداية عند رفع الإصبع"
-  // على iOS Safari مع pin. لازم تنادى قبل إنشاء أي ScrollTrigger.
-  if (ScrollTrigger.isTouch) {
-    ScrollTrigger.normalizeScroll(true);
-  }
+  const scrolledPastTop = -rect.top;
+  return Math.min(1, Math.max(0, scrolledPastTop / totalScrollable));
+}
 
-  const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
+let tickScheduled = false;
+function onScroll() {
+  if (tickScheduled) return;
+  tickScheduled = true;
 
-  gsap.to(playhead, {
-    frame: CONFIG.frameCount - 1,
-    snap: "frame",
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#laptop-section",
-      pin: true,
-      start: "top top",
-      end: "+=" + scrollEndPx,
-      scrub: 0.15,
-      anticipatePin: 1,
-    },
-    onUpdate: () => drawFrame(Math.round(playhead.frame)),
+  requestAnimationFrame(() => {
+    const progress = getScrollProgress();
+    window.laptopScrollProgress = progress;
+
+    const frame = Math.round(progress * (CONFIG.frameCount - 1));
+    if (frame !== currentFrameIndex) {
+      currentFrameIndex = frame;
+      drawFrame(frame);
+    }
+
+    tickScheduled = false;
   });
 }
 
-/* ============================================
-   Responsive handling (تغيير حجم نافذة حقيقي، ديسكتوب مثلاً)
-   ============================================ */
+/* ---------- Responsive handling ---------- */
+
 let resizeTimeout;
 function handleResize() {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     resizeCanvas();
+    onScroll();
   }, 150);
 }
 
+window.addEventListener("scroll", onScroll, { passive: true });
 window.addEventListener("resize", handleResize);
 
 document.addEventListener("DOMContentLoaded", () => {
   preloadImages(() => {
-    initScrollAnimation();
+    onScroll();
   });
 });
