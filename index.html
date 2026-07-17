@@ -24,6 +24,21 @@
   <link rel="stylesheet" href="css/content/resume.css" />
   <link rel="stylesheet" href="css/content/contact.css" />
 </head>
+
+<div id="debug-overlay" style="position:fixed;top:8px;left:8px;z-index:99999;background:rgba(0,0,0,0.85);color:#0f0;font-family:monospace;font-size:12px;padding:6px 10px;border-radius:6px;pointer-events:none;">
+  scrollY: -- | progress: --
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('debug-overlay');
+    if (el) {
+      const st = window.ScrollTrigger && ScrollTrigger.getAll()[0];
+      const progress = st ? st.progress.toFixed(3) : 'n/a';
+      el.textContent = `scrollY: ${Math.round(window.scrollY)} | progress: ${progress}`;
+    }
+  });
+</script>
 <body>
 
 <section class="laptop-section" id="laptop-section">
