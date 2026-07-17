@@ -107,24 +107,6 @@
   pointer-events: none;
 }
 
-/* ---------- Backdrop blur when a window is open ---------- */
-
-.desktop-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 2; /* above icons, below windows */
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  opacity: 0;
-  pointer-events: none; /* never blocks clicks — purely visual */
-  transition: opacity 0.25s ease;
-}
-
-.desktop-backdrop.is-active {
-  opacity: 1;
-}
-
 /* ---------- Windows 11-style application window ---------- */
 
 .desktop-window {
@@ -221,8 +203,6 @@
 
 .window-content {
   flex: 1;
-  container-type: inline-size; /* يخلي أي محتوى جواها يقدر يتجاوب مع عرض النافذة نفسها */
-  container-name: window;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px 18px;
