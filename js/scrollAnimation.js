@@ -14,7 +14,7 @@ const CONFIG = {
 // كم ضعف من ارتفاع الشاشة تاخذ مسافة السكرول الكاملة للأنيميشن.
 // دالة (function) بدل رقم ثابت حتى GSAP تعيد حسابها صح عند أي
 // تغيّر بحجم الشاشة (بما فيها اختفاء/ظهور شريط عنوان الموبايل).
-const SCROLL_LENGTH_VH = 80;
+const SCROLL_LENGTH_VH = 60;
 function getScrollEnd() {
   return "+=" + window.innerHeight * (SCROLL_LENGTH_VH / 100);
 }
