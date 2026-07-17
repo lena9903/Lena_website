@@ -12,8 +12,8 @@ const CONFIG = {
   frameDigits: 4,
   frameExt: ".jpg",
   bgColor: "#0b0b0c",
-  dragDistance: 500, // كم بكسل سحب لازم لإكمال الأنيميشن بالكامل (0 → 1)
-  wheelSensitivity: 1 / 600, // حساسية عجلة الماوس (لدعم الكمبيوتر)
+  dragDistance: 900, // كبّرناها من 500 لـ 900 = سحب أطول = حركة أبطأ وأهدى
+  wheelSensitivity: 1 / 600,
 };
 
 function getFramePath(index) {
