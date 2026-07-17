@@ -129,10 +129,10 @@ function positionOverlay() {
     scale = scale * (availableHeight / neededHeight);
   }
 
-  overlayEl.style.setProperty("--icon-rows", rows);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 52 * scale, 64)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(34, 84 * scale, 100)}px`);
-  overlayEl.style.setProperty("--icon-gap", `${clampPx(4, 16 * scale, 22)}px`);
+overlayEl.style.setProperty("--icon-rows", rows);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 48 * scale, 60)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${clampPx(30, 68 * scale, 84)}px`);
+  overlayEl.style.setProperty("--icon-gap", `${clampPx(2, 8 * scale, 14)}px`);
   overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
   overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
