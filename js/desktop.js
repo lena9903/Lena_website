@@ -99,28 +99,13 @@ function positionOverlay() {
 
   const scaleW = clampPx(0.6, screenWidth / 1000, 1.6);
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
-  let scale = Math.min(scaleW, scaleH);
+  const scale = Math.min(scaleW, scaleH);
 
-  // نتأكد إنه الستة فولدرات بيضلوا بعمود واحد دايماً بدون التفاف:
-  // منحسب كم مساحة عمودية متاحة فعلياً، ومنصغر الـ scale أكتر لو لزم
-  const FOLDER_COUNT = 6;
-  const padTopEstimate = clampPx(10, 20 * scale, 28);
-  const padBottomEstimate = clampPx(30, 46 * scale, 60);
-  const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
-  const cellEstimate = clampPx(56, 84 * scale, 100);
-  const gapEstimate = clampPx(8, 16 * scale, 22);
-  const neededHeight = FOLDER_COUNT * cellEstimate + (FOLDER_COUNT - 1) * gapEstimate;
-
-  if (neededHeight > availableHeight && neededHeight > 0) {
-    const shrinkFactor = availableHeight / neededHeight;
-    scale = scale * shrinkFactor;
-  }
-
-  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 52 * scale, 64)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(34, 84 * scale, 100)}px`);
-  overlayEl.style.setProperty("--icon-gap", `${clampPx(4, 16 * scale, 22)}px`);
-  overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 20 * scale, 28)}px`);
-  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(34, 52 * scale, 64)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${clampPx(56, 84 * scale, 100)}px`);
+  overlayEl.style.setProperty("--icon-gap", `${clampPx(6, 12 * scale, 18)}px`);
+  overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
+  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(30, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
   overlayEl.style.setProperty("--icon-font", `${clampPx(9, 12 * scale, 14)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
@@ -427,6 +412,9 @@ function focusWindow(id) {
 /* ---------- Show/hide overlay once the animation is fully finished ---------- */
 
 function initDesktopScrollWatcher() {
+  // ما عاد في scroll إطلاقاً — منراقب window.laptopScrollProgress
+  // مباشرة عبر حلقة رسم مستمرة (نفس مبدأ requestAnimationFrame
+  // المستخدم بملف scrollAnimation.js)
   function tick() {
     const progress = window.laptopScrollProgress || 0;
     const isComplete = progress >= 0.99;

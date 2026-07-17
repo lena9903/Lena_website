@@ -37,7 +37,8 @@
   bottom: var(--icon-pad-bottom, 46px);
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  align-content: flex-start;
   gap: var(--icon-gap, 18px);
   max-width: 65%;
 }
