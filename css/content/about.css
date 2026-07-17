@@ -350,12 +350,12 @@
     flex-direction: row;
   }
 
-  .about-pro-left {
-    width: 100px;
-    height: 100px;
+.about-pro-left {
+    width: 90px;
+    height: 90px;
     flex-shrink: 0;
     margin: 0 auto;
-    border-radius: 50%;
+    border-radius: 30%;
     overflow: hidden;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
