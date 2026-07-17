@@ -83,22 +83,15 @@ function preloadImages(onFirstFrameReady) {
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
 
-  // Prevents ScrollTrigger from recalculating (and glitching) every time
-  // the mobile browser's address bar shows/hides during scroll.
-  ScrollTrigger.config({ ignoreMobileResize: true });
-
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
     snap: "frame",
     ease: "none",
     scrollTrigger: {
       trigger: "#laptop-section",
-      pin: ".laptop-sticky",   // GSAP itself pins the element (fixed positioning)
-      pinSpacing: false,        // the outer section's own height already reserves scroll room
       start: "top top",
       end: "bottom bottom",
       scrub: 0.4,
-      anticipatePin: 1,
     },
     onUpdate: () => drawFrame(Math.round(playhead.frame)),
   });
