@@ -410,10 +410,12 @@ function focusWindow(id) {
 function initDesktopScrollWatcher() {
   if (!window.ScrollTrigger) return;
 
+  const scrollEndPx = window.innerHeight * 1.5; // نفس نسبة SCROLL_LENGTH_VH (150%)
+
   ScrollTrigger.create({
     trigger: "#laptop-section",
     start: "top top",
-    end: typeof getScrollEnd === "function" ? getScrollEnd : "bottom bottom",
+    end: "+=" + scrollEndPx,
     onUpdate: (self) => {
       const isComplete = self.progress >= 0.99;
       overlayEl.classList.toggle("is-active", isComplete);

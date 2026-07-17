@@ -11,13 +11,13 @@ const CONFIG = {
   bgColor: "#0b0b0c",
 };
 
-// كم ضعف من ارتفاع الشاشة تاخذ مسافة السكرول الكاملة للأنيميشن.
-// دالة (function) بدل رقم ثابت حتى GSAP تعيد حسابها صح عند أي
-// تغيّر بحجم الشاشة (بما فيها اختفاء/ظهور شريط عنوان الموبايل).
-const SCROLL_LENGTH_VH = 50;
-function getScrollEnd() {
-  return "+=" + window.innerHeight * (SCROLL_LENGTH_VH / 100);
-}
+const SCROLL_LENGTH_VH = 150;
+
+// جهاز لمس (موبايل/تابلت) ولا لأ — بيحدد إذا رح نسمح بإعادة الحساب
+// التلقائية عند تغيّر حجم الشاشة (شريط عنوان المتصفح بيغيّرها باستمرار
+// على الموبايل، وأي إعادة حساب أثناء اللمس فعلياً بترجّع السكرول لبداية
+// الصفحة على iOS Safari — مشكلة معروفة).
+const IS_TOUCH_DEVICE = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
 function getFramePath(index) {
   const num = String(index).padStart(CONFIG.frameDigits, "0");
@@ -90,7 +90,11 @@ function preloadImages(onFirstFrameReady) {
 
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.config({ ignoreMobileResize: true });
+  ScrollTrigger.config({ ignoreMobileResize: true });
+
+  // رقم ثابت يتحسب مرة وحدة بس عند التحميل — مش دالة تتحسب من جديد
+  // كل مرة، حتى ما يصير أي تغيير بطول الصفحة أثناء اللمس
+  const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
 
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
@@ -98,9 +102,9 @@ function initScrollAnimation() {
     ease: "none",
     scrollTrigger: {
       trigger: "#laptop-section",
-      pin: true,            // GSAP نفسها بتثبت العنصر وبتضيف مسافة السكرول اللازمة تلقائياً
+      pin: true,
       start: "top top",
-      end: getScrollEnd,    // دالة بتتحسب من جديد تلقائياً عند أي refresh
+      end: "+=" + scrollEndPx,
       scrub: 0.15,
       anticipatePin: 1,
     },
@@ -111,32 +115,19 @@ function initScrollAnimation() {
 /* ============================================
    Responsive handling
    ============================================ */
-/* ============================================
-   Responsive handling
-   ============================================ */
 let resizeTimeout;
-let lastWidth = window.innerWidth;
-let lastHeight = window.innerHeight;
-
 function handleResize() {
+  // على أجهزة اللمس (موبايل/تابلت) ما منعمل أي إعادة حساب تلقائية
+  // إطلاقاً — لأنها هي بالضبط سبب رجوع السكرول للبداية أثناء اللمس.
+  // بيكفي تحديث الكانفس البصري بس بدون لمس مقاييس GSAP.
+  if (IS_TOUCH_DEVICE) {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 150);
+    return;
+  }
+
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    const newWidth = window.innerWidth;
-    const newHeight = window.innerHeight;
-
-    const widthChanged = newWidth !== lastWidth;
-    // فرق كبير بالارتفاع (أكتر من 120px) = تدوير شاشة حقيقي أو تغيير
-    // نافذة فعلي. فرق بسيط = مجرد ظهور/اختفاء شريط عنوان المتصفح
-    // بالموبايل، وهاد لازم نتجاهله تماماً حتى ما يصير القفزة للبداية
-    const heightChangedSignificantly = Math.abs(newHeight - lastHeight) > 120;
-
-    if (!widthChanged && !heightChangedSignificantly) {
-      return; // تجاهل تام — على الأغلب شريط عنوان المتصفح بس
-    }
-
-    lastWidth = newWidth;
-    lastHeight = newHeight;
-
     resizeCanvas();
     if (window.ScrollTrigger) {
       ScrollTrigger.refresh();
