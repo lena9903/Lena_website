@@ -107,8 +107,8 @@ function positionOverlay() {
   const FOLDER_COUNT = FOLDERS.length;
 
   function computeCellHeight(s) {
-    const iconSize = clampPx(20, 46 * s, 60);
-    const fontSize = clampPx(8, 11 * s, 13);
+    const iconSize = clampPx(28, 58 * s, 76);
+    const fontSize = clampPx(10, 13 * s, 16);
     const labelTwoLines = fontSize * 1.25 * 2;
     const cellPaddingVertical = 12;
     const labelMarginTop = 5;
@@ -136,15 +136,15 @@ function positionOverlay() {
 
   const rows = Math.ceil(FOLDER_COUNT / cols);
 
-  overlayEl.style.setProperty("--icon-rows", rows);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(20, 46 * scale, 60)}px`);
-  overlayEl.style.setProperty("--icon-cell-width", `${clampPx(58, 92 * scale, 110)}px`);
+overlayEl.style.setProperty("--icon-rows", rows);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(28, 58 * scale, 76)}px`);
+  overlayEl.style.setProperty("--icon-cell-width", `${clampPx(70, 108 * scale, 130)}px`);
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
   overlayEl.style.setProperty("--icon-gap", `${gapEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-top", `${padTopEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-bottom", `${padBottomEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
-  overlayEl.style.setProperty("--icon-font", `${clampPx(8, 11 * scale, 13)}px`);
+  overlayEl.style.setProperty("--icon-font", `${clampPx(10, 13 * scale, 16)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
   overlayEl.style.setProperty("--title-font", `${clampPx(9, 12 * scale, 13)}px`);
   overlayEl.style.setProperty("--content-font", `${clampPx(9, 12 * scale, 14)}px`);
