@@ -45,7 +45,7 @@ window.FolderContent.about = `
         </div>
       </div>
 
-      <div class="about-pro-buttons">
+  <div class="about-pro-buttons">
         <button class="about-pro-btn about-pro-btn-primary" id="about-contact-btn">
           Get in Touch
           <span class="about-pro-btn-arrow">→</span>
@@ -57,8 +57,11 @@ window.FolderContent.about = `
     </div>
 
   </div>
-`;
 
+  <div class="about-scroll-hint" id="about-scroll-hint">
+    <span class="about-scroll-chevron">⌄</span>
+  </div>
+`;
 window.FolderInit.about = function (windowEl) {
 const roles = ["App Developer", "AI Enthusiast"];
   let currentRoleIndex = 0;

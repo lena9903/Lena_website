@@ -224,9 +224,8 @@
 }
 
 .window-content {
+  position: relative; /* يسمح لأي فولدر بإضافة عناصر ثابتة (زي مؤشر السكرول) بداخله */
   flex: 1;
-  container-type: inline-size; /* يخلي أي محتوى جواها يقدر يتجاوب مع عرض النافذة نفسها */
-  container-name: window;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px 18px;
