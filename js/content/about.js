@@ -112,4 +112,24 @@ const roles = ["App Developer", "AI Enthusiast"];
       }
     });
   }
+
+  // ---------- Scroll hint (mobile only, controlled by CSS container query) ----------
+  const scrollHint = windowEl.querySelector("#about-scroll-hint");
+  const scrollContainer = windowEl.querySelector(".window-content");
+
+  if (scrollHint && scrollContainer) {
+    function updateScrollHint() {
+      const hasOverflow = scrollContainer.scrollHeight > scrollContainer.clientHeight + 4;
+      const nearBottom =
+        scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 8;
+
+      scrollHint.classList.toggle("is-visible", hasOverflow && !nearBottom);
+    }
+
+    scrollContainer.addEventListener("scroll", updateScrollHint, { passive: true });
+
+    // تأخير بسيط أول ما تفتح النافذة حتى تستقر الأبعاد قبل أول قياس
+    setTimeout(updateScrollHint, 150);
+    window.addEventListener("resize", updateScrollHint);
+  }
 };

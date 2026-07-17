@@ -378,3 +378,44 @@
     font-size: 9.5px;
   }
 }
+
+/* ---------- Scroll hint — mobile only ---------- */
+
+.about-scroll-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  display: none; /* افتراضياً مخفي — يظهر بس عالجوال عبر الـ container query تحت */
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: linear-gradient(to bottom, transparent, rgba(20, 16, 18, 0.55) 70%);
+}
+
+.about-scroll-hint.is-visible {
+  opacity: 1;
+}
+
+.about-scroll-chevron {
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  animation: about-scroll-bounce 1.4s ease-in-out infinite;
+}
+
+@keyframes about-scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@container window (max-width: 480px) {
+  .about-scroll-hint {
+    display: flex; /* يفعّل الظهور بس عالمقاسات الضيقة (موبايل) */
+  }
+}
