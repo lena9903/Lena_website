@@ -1,8 +1,7 @@
 /* ============================================
    Laptop Opening — Scroll-Scrubbed Frame Sequence
-   (Pure vanilla JS — no external library, no "pin" magic.
-   This sidesteps the GSAP ScrollTrigger + iOS Safari
-   conflicts entirely.)
+   (Pure vanilla JS, no external library, with
+   smoothing to eliminate touch-scroll jitter)
    ============================================ */
 
 const CONFIG = {
@@ -29,8 +28,11 @@ let canvasWidth = 0;
 let canvasHeight = 0;
 let currentFrameIndex = 0;
 
-// آخر نسبة تقدم محسوبة (0 لـ 1) — متاحة عالمياً حتى desktop.js
-// يقدر يعرف متى خلصت الأنيميشن بدون أي مكتبة وسيطة
+// الهدف (الرقم الخام من السكرول) مقابل القيمة المعروضة فعلياً
+// (بتتحرك بسلاسة وراء الهدف بدل ما تقفز له مباشرة — بيلغي أي رجفة)
+let targetProgress = 0;
+let displayProgress = 0;
+
 window.laptopScrollProgress = 0;
 
 function resizeCanvas() {
@@ -88,38 +90,46 @@ function preloadImages(onFirstFrameReady) {
   }
 }
 
-/* ---------- Scroll-linked progress (no library) ---------- */
+/* ---------- Raw scroll progress ---------- */
 
-function getScrollProgress() {
+function computeTargetProgress() {
   const rect = laptopSection.getBoundingClientRect();
   const totalScrollable = laptopSection.offsetHeight - window.innerHeight;
 
-  // لو القياس مش جاهز/منطقي بعد (مثلاً أثناء أول جزء من الميلي ثانية
-  // قبل ما يستقر تخطيط الصفحة)، منرجع 0 بدل 1 حتى ما "تقفز" الصورة
-  // غلط للفريم الأخير بالخطأ
   if (totalScrollable <= 0) return 0;
 
   const scrolledPastTop = -rect.top;
-  return Math.min(1, Math.max(0, scrolledPastTop / totalScrollable));
+  const raw = scrolledPastTop / totalScrollable;
+
+  if (!isFinite(raw)) return targetProgress;
+
+  return Math.min(1, Math.max(0, raw));
 }
 
-let tickScheduled = false;
-function onScroll() {
-  if (tickScheduled) return;
-  tickScheduled = true;
+function onScrollOrResize() {
+  targetProgress = computeTargetProgress();
+}
 
-  requestAnimationFrame(() => {
-    const progress = getScrollProgress();
-    window.laptopScrollProgress = progress;
+/* ---------- Smoothing loop (kills touch jitter) ---------- */
 
-    const frame = Math.round(progress * (CONFIG.frameCount - 1));
-    if (frame !== currentFrameIndex) {
-      currentFrameIndex = frame;
-      drawFrame(frame);
-    }
+const SMOOTHING = 0.18;
 
-    tickScheduled = false;
-  });
+function renderLoop() {
+  displayProgress += (targetProgress - displayProgress) * SMOOTHING;
+
+  if (Math.abs(targetProgress - displayProgress) < 0.0005) {
+    displayProgress = targetProgress;
+  }
+
+  window.laptopScrollProgress = displayProgress;
+
+  const frame = Math.round(displayProgress * (CONFIG.frameCount - 1));
+  if (frame !== currentFrameIndex) {
+    currentFrameIndex = frame;
+    drawFrame(frame);
+  }
+
+  requestAnimationFrame(renderLoop);
 }
 
 /* ---------- Responsive handling ---------- */
@@ -129,21 +139,22 @@ function handleResize() {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     resizeCanvas();
-    onScroll();
+    onScrollOrResize();
   }, 150);
 }
 
-window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("scroll", onScrollOrResize, { passive: true });
 window.addEventListener("resize", handleResize);
 
 document.addEventListener("DOMContentLoaded", () => {
   preloadImages(() => {
-    onScroll();
-    // إعادة حساب بعد ما يستقر التخطيط تماماً (مهم للموبايل حيث
-    // شريط عنوان المتصفح بياخذ لحظة ليستقر بعد أول تحميل)
+    onScrollOrResize();
+    displayProgress = targetProgress;
+    requestAnimationFrame(renderLoop);
+
     setTimeout(() => {
       resizeCanvas();
-      onScroll();
+      onScrollOrResize();
     }, 300);
   });
 });
