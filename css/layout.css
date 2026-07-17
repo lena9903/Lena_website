@@ -1,0 +1,23 @@
+body {
+  background-color: var(--color-bg);
+}
+
+.laptop-section {
+  position: relative;
+  height: 400vh;
+  background-color: var(--color-bg);
+}
+
+.laptop-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+#laptop-canvas {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y; /* يضمن انه اللمس على الكانفس يسكرول عادي وما يتعارض معه */
+}

@@ -1,0 +1,291 @@
+/* ============================================
+   Windows-Style Interactive Desktop Overlay
+   Appears once the laptop-opening animation
+   reaches its final frame. Does not affect
+   the canvas animation in any way.
+
+   NOTE: This file contains ONLY the core
+   desktop system (icons, windows, controls).
+   Each folder's own content styling lives in
+   css/content/<folderId>.css
+   ============================================ */
+
+.desktop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+  user-select: none;
+  z-index: 5;
+}
+
+.desktop-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------- Folder icons: top-left, vertical, Windows-style ---------- */
+
+.desktop-icons {
+  position: absolute;
+  top: var(--icon-pad-top, 20px);
+  left: var(--icon-pad-left, 16px);
+  bottom: var(--icon-pad-bottom, 46px);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--icon-gap, 18px);
+  max-width: 65%;
+}
+
+.folder-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--icon-cell, 84px);
+  padding: 6px 4px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.folder-icon:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.folder-icon:focus-visible {
+  outline: 1px dashed rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
+}
+
+.folder-icon.is-selected {
+  background-color: rgba(0, 120, 215, 0.3);
+  border-color: rgba(0, 120, 215, 0.7);
+}
+
+.folder-icon .icon-box {
+  width: var(--icon-size, 48px);
+  height: var(--icon-size, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.folder-icon .icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.folder-icon .folder-label {
+  margin-top: 5px;
+  color: #ffffff;
+  text-align: center;
+  font-size: var(--icon-font, 12px);
+  font-weight: 500;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 6px rgba(0, 0, 0, 0.5);
+  word-break: break-word;
+}
+
+/* ---------- Windows layer ---------- */
+
+.desktop-windows {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Backdrop blur when a window is open ---------- */
+
+.desktop-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 2; /* above icons, below windows */
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none; /* never blocks clicks — purely visual */
+  transition: opacity 0.25s ease;
+}
+
+.desktop-backdrop.is-active {
+  opacity: 1;
+}
+
+/* ---------- Windows 11-style application window ---------- */
+
+.desktop-window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(30, 30, 34, 0.72);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: scale(0.92);
+  transform-origin: center center;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+.desktop-window.is-open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.desktop-window.is-minimized {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.desktop-window.is-maximized {
+  border-radius: 0;
+}
+
+.window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h, 30px);
+  padding: 0 6px 0 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.window-header:active {
+  cursor: grabbing;
+}
+
+.window-title {
+  color: #f2f2f2;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: var(--title-font, 12px);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.window-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #eaeaea;
+}
+
+.window-controls button svg {
+  width: 10px;
+  height: 10px;
+}
+
+.window-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.window-controls .btn-close:hover {
+  background-color: #e81123;
+}
+
+.window-content {
+  flex: 1;
+  container-type: inline-size; /* يخلي أي محتوى جواها يقدر يتجاوب مع عرض النافذة نفسها */
+  container-name: window;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 18px;
+  color: #eeeeee;
+  font-size: var(--content-font, 12px);
+  line-height: 1.6;
+}
+
+.window-content h3 {
+  margin-bottom: 8px;
+  font-size: var(--content-h3, 14px);
+  color: #ffffff;
+}
+
+.window-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.window-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* ---------- Resize handles (edges + corners) ---------- */
+
+.resize-handle {
+  position: absolute;
+  z-index: 3;
+}
+
+.rh-n,
+.rh-s {
+  left: 8px;
+  right: 8px;
+  height: 8px;
+  cursor: ns-resize;
+}
+.rh-n { top: -4px; }
+.rh-s { bottom: -4px; }
+
+.rh-e,
+.rh-w {
+  top: 8px;
+  bottom: 8px;
+  width: 8px;
+  cursor: ew-resize;
+}
+.rh-e { right: -4px; }
+.rh-w { left: -4px; }
+
+.rh-ne,
+.rh-nw,
+.rh-se,
+.rh-sw {
+  width: 14px;
+  height: 14px;
+}
+.rh-ne { top: -4px; right: -4px; cursor: nesw-resize; }
+.rh-nw { top: -4px; left: -4px; cursor: nwse-resize; }
+.rh-se { bottom: -4px; right: -4px; cursor: nwse-resize; }
+.rh-sw { bottom: -4px; left: -4px; cursor: nesw-resize; }
+
+.desktop-window.is-maximized .resize-handle {
+  display: none;
+}

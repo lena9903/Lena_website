@@ -1,0 +1,29 @@
+/* دعم الـ dynamic viewport height (يحل مشكلة نط الشاشة عند ظهور/اختفاء
+   شريط العنوان بالمتصفح على الموبايل) */
+@supports (height: 100dvh) {
+  .laptop-sticky {
+    height: 100dvh;
+  }
+}
+
+/* تابلت */
+@media (max-width: 1024px) {
+  .laptop-section {
+    height: 380vh;
+  }
+}
+
+/* موبايل عمودي */
+@media (max-width: 768px) {
+  .laptop-section {
+    height: 340vh;
+  }
+}
+
+/* موبايل أفقي (landscape) — الارتفاع صغير جداً هون فبنحتاج مسافة سكرول أطول
+   حتى تضل الحركة سلسة وما تفوت بسرعة */
+@media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+  .laptop-section {
+    height: 500vh;
+  }
+}

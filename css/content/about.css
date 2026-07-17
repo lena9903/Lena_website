@@ -1,0 +1,333 @@
+/* ============================================
+   Folder Style — About Me (Rose Palette)
+   Colors derived from #e87a93
+   ============================================ */
+
+.about-pro {
+  --rose-100: #fbe4e9;
+  --rose-300: #f3aebb;
+  --rose-400: #ea8ea0;
+  --rose-500: #e87a93; /* base color */
+  --rose-600: #d15b78;
+  --rose-700: #b8455f;
+
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  /* compensates the -16px top/-16px bottom margin below so the image
+     reaches all the way to the window's edges with no gap */
+  min-height: calc(100% + 32px);
+  margin: -16px -18px;
+}
+
+/* LEFT: Profile Image — full height rectangle */
+
+.about-pro-left {
+  flex-shrink: 0;
+  width: 220px;
+  position: relative;
+  overflow: hidden;
+  align-self: stretch;
+}
+
+.about-pro-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+
+
+.about-pro-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* RIGHT: Text & Content */
+
+.about-pro-right {
+  flex: 1 1 0%;
+  min-width: 0;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* يتمركز المحتوى بنص النافذة عمودياً بدل ما يضل فراغ تحته */
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.about-pro-greeting {
+  margin: 0;
+  font-family: "Sora", sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  background: linear-gradient(135deg, #ffffff, var(--rose-300));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.about-pro-typing-line {
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  min-height: 30px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.about-pro-prefix {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about-pro-typing {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--rose-400), var(--rose-600));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-pro-cursor {
+  font-family: "JetBrains Mono", monospace;
+  display: inline-block;
+  width: 2px;
+  color: var(--rose-500);
+  animation: about-pro-blink 0.7s infinite;
+  -webkit-text-fill-color: var(--rose-500);
+}
+
+@keyframes about-pro-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.about-pro-bio {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+  overflow-wrap: break-word; /* حماية إضافية لو في كلمة طويلة جداً بلا مسافات */
+}
+
+.about-pro-highlight,
+.about-pro-highlight-flutter {
+  color: var(--rose-400);
+  font-weight: 600;
+}
+
+/* Skills Badges */
+
+.about-pro-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-pro-badge {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(232, 122, 147, 0.5);
+  background: rgba(232, 122, 147, 0.12);
+  color: var(--rose-300);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.about-pro-badge:hover {
+  background: rgba(232, 122, 147, 0.25);
+  border-color: rgba(232, 122, 147, 0.9);
+}
+
+.about-pro-badge-icon {
+  font-size: 13px;
+}
+
+/* Footer: Status + Location */
+
+.about-pro-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about-pro-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-pro-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: about-pro-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+@keyframes about-pro-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px #22c55e; }
+  50% { opacity: 0.6; box-shadow: 0 0 12px #22c55e; }
+}
+
+/* Buttons */
+
+.about-pro-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px; /* مسافة بسيطة عن الفقرة اللي فوقها للتباين */
+}
+
+.about-pro-btn {
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  padding: 9px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-pro-btn-primary {
+  background: linear-gradient(135deg, var(--rose-500), var(--rose-600));
+  color: #ffffff;
+}
+
+.about-pro-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(232, 122, 147, 0.45);
+}
+
+.about-pro-btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.about-pro-btn-primary:hover .about-pro-btn-arrow {
+  transform: translateX(4px);
+}
+
+.about-pro-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.about-pro-btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Social Links */
+
+.about-pro-socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: "Manrope", sans-serif;
+}
+
+.about-pro-social {
+  font-size: 11px;
+  color: var(--rose-400);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.about-pro-social:hover {
+  color: var(--rose-300);
+}
+
+/* Keeps the tulip emoji in its natural colors instead of inheriting
+   the heading's gradient text-fill */
+.about-pro-emoji {
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+.about-pro-article {
+  font-family: "Manrope", sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Responsive stacking when the window itself is narrow ---------- */
+
+/* ---------- Responsive scaling — keeps image-left / text-right layout
+   at ANY window size, just shrinks proportionally instead of stacking ---------- */
+
+.about-pro-left {
+  width: clamp(90px, 32%, 220px); /* يصغر تدريجياً بدل ما يوقف فجأة أو ينزل تحت */
+}
+
+@container window (max-width: 480px) {
+  .about-pro-right {
+    padding: 14px 12px;
+    gap: 8px;
+  }
+
+  .about-pro-greeting {
+    font-size: clamp(16px, 5.5vw, 22px);
+  }
+
+  .about-pro-emoji {
+    font-size: 0.8em;
+  }
+
+  .about-pro-typing-line {
+    font-size: clamp(11px, 3.2vw, 14px);
+  }
+
+  .about-pro-bio {
+    font-size: clamp(10px, 2.8vw, 12px);
+    line-height: 1.6;
+  }
+
+  .about-pro-buttons {
+    gap: 8px;
+  }
+
+  .about-pro-btn {
+    padding: 7px 12px;
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+}
+
+@container window (max-width: 340px) {
+  .about-pro-left {
+    width: clamp(70px, 30%, 90px);
+  }
+
+  .about-pro-right {
+    padding: 10px 10px;
+  }
+
+  .about-pro-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
