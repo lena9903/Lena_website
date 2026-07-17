@@ -90,7 +90,7 @@ function preloadImages(onFirstFrameReady) {
 
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.config({ ignoreMobileResize: true });
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
@@ -111,10 +111,32 @@ function initScrollAnimation() {
 /* ============================================
    Responsive handling
    ============================================ */
+/* ============================================
+   Responsive handling
+   ============================================ */
 let resizeTimeout;
+let lastWidth = window.innerWidth;
+let lastHeight = window.innerHeight;
+
 function handleResize() {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
+    const newWidth = window.innerWidth;
+    const newHeight = window.innerHeight;
+
+    const widthChanged = newWidth !== lastWidth;
+    // فرق كبير بالارتفاع (أكتر من 120px) = تدوير شاشة حقيقي أو تغيير
+    // نافذة فعلي. فرق بسيط = مجرد ظهور/اختفاء شريط عنوان المتصفح
+    // بالموبايل، وهاد لازم نتجاهله تماماً حتى ما يصير القفزة للبداية
+    const heightChangedSignificantly = Math.abs(newHeight - lastHeight) > 120;
+
+    if (!widthChanged && !heightChangedSignificantly) {
+      return; // تجاهل تام — على الأغلب شريط عنوان المتصفح بس
+    }
+
+    lastWidth = newWidth;
+    lastHeight = newHeight;
+
     resizeCanvas();
     if (window.ScrollTrigger) {
       ScrollTrigger.refresh();
