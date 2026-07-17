@@ -342,11 +342,11 @@
   }
 
   .about-pro-left {
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
     flex-shrink: 0;
     margin: 0 auto;
-    border-radius: 70%;
+    border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
