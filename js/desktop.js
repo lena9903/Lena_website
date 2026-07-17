@@ -101,29 +101,45 @@ function positionOverlay() {
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
   let scale = Math.min(scaleW, scaleH);
 
-  // عمود واحد إجباري دايماً (زي الشكل الأصلي) — منصغر الحجم لو لزم
-  // حتى الستة فولدرات يتسعوا عمودياً بعمود واحد بس
   const FOLDER_COUNT = FOLDERS.length;
+
+  // نحسب الارتفاع المطلوب فعلياً بناءً على نفس المكونات يلي بترسمها CSS:
+  // padding علوي/سفلي للخانة + حجم الأيقونة + مسافة + سطرين نص كحد أقصى
+  function computeCellHeight(s) {
+    const iconSize = clampPx(20, 46 * s, 60);
+    const fontSize = clampPx(8, 11 * s, 13);
+    const labelTwoLines = fontSize * 1.25 * 2; // -webkit-line-clamp: 2
+    const cellPaddingVertical = 12; // 6px top + 6px bottom من CSS
+    const labelMarginTop = 5;
+    return cellPaddingVertical + iconSize + labelMarginTop + labelTwoLines;
+  }
+
   const padTopEstimate = clampPx(6, 12 * scale, 16);
   const padBottomEstimate = clampPx(30, 46 * scale, 60);
   const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
-  const cellEstimate = clampPx(30, 68 * scale, 84);
-  const gapEstimate = clampPx(2, 8 * scale, 14);
-  const neededHeight = FOLDER_COUNT * cellEstimate + (FOLDER_COUNT - 1) * gapEstimate;
 
-  if (neededHeight > availableHeight && neededHeight > 0) {
-    scale = scale * (availableHeight / neededHeight);
+  let cellHeight = computeCellHeight(scale);
+  let gapEstimate = clampPx(2, 8 * scale, 14);
+  let neededHeight = FOLDER_COUNT * cellHeight + (FOLDER_COUNT - 1) * gapEstimate;
+
+  // لو ما كفت المساحة، منصغر scale تدريجياً (خطوات صغيرة) لحد ما يتساوى
+  // الاحتياج مع المساحة المتاحة فعلياً — أدق من معادلة نسبة واحدة مباشرة
+  let iterations = 0;
+  while (neededHeight > availableHeight && scale > 0.15 && iterations < 30) {
+    scale -= 0.02;
+    cellHeight = computeCellHeight(scale);
+    gapEstimate = clampPx(2, 8 * scale, 14);
+    neededHeight = FOLDER_COUNT * cellHeight + (FOLDER_COUNT - 1) * gapEstimate;
+    iterations++;
   }
 
   overlayEl.style.setProperty("--icon-rows", FOLDER_COUNT);
   overlayEl.style.setProperty("--icon-size", `${clampPx(20, 46 * scale, 60)}px`);
-  // عرض خانة الأيقونة أكبر نسبياً من ارتفاعها حتى يتسع الاسم الطويل
-  // (زي "Experience") على سطرين كاملين بدون قص
   overlayEl.style.setProperty("--icon-cell-width", `${clampPx(58, 92 * scale, 110)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(30, 66 * scale, 80)}px`);
-  overlayEl.style.setProperty("--icon-gap", `${clampPx(2, 8 * scale, 14)}px`);
-  overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
-  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
+  overlayEl.style.setProperty("--icon-gap", `${gapEstimate}px`);
+  overlayEl.style.setProperty("--icon-pad-top", `${padTopEstimate}px`);
+  overlayEl.style.setProperty("--icon-pad-bottom", `${padBottomEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
   overlayEl.style.setProperty("--icon-font", `${clampPx(8, 11 * scale, 13)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
