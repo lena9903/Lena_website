@@ -13,8 +13,6 @@ const CONFIG = {
 
 const SCROLL_LENGTH_VH = 150;
 
-const IS_TOUCH_DEVICE = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-
 function getFramePath(index) {
   const num = String(index).padStart(CONFIG.frameDigits, "0");
   return `${CONFIG.frameFolder}/${CONFIG.framePrefix}${num}${CONFIG.frameExt}`;
@@ -86,7 +84,14 @@ function preloadImages(onFirstFrameReady) {
 
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.config({ ignoreMobileResize: true });
+
+  // بيوقف مراقبة ScrollTrigger الداخلية لحدث "resize" تحديداً — هاي هي
+  // نفسها المسؤولة عن القفزة للبداية على iOS Safari (شريط عنوان
+  // المتصفح بيختفي = تغيّر بالارتفاع = ScrollTrigger كانت تسوي refresh
+  // تلقائي من جوا، بغض النظر عن أي كود resize كتبناه إحنا).
+  ScrollTrigger.config({
+    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+  });
 
   const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
 
@@ -97,8 +102,6 @@ function initScrollAnimation() {
     scrollTrigger: {
       trigger: "#laptop-section",
       pin: true,
-      pinType: "transform", // بديل عن position:fixed — أكثر استقراراً على iOS
-                              // Safari لأنه ما بيتأثر بحساب شريط عنوان المتصفح
       start: "top top",
       end: "+=" + scrollEndPx,
       scrub: 0.15,
@@ -109,27 +112,17 @@ function initScrollAnimation() {
 }
 
 /* ============================================
-   Responsive handling
+   Responsive handling (تغيير حجم نافذة حقيقي، ديسكتوب مثلاً)
    ============================================ */
 let resizeTimeout;
 function handleResize() {
-  if (IS_TOUCH_DEVICE) {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resizeCanvas, 150);
-    return;
-  }
-
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     resizeCanvas();
-    if (window.ScrollTrigger) {
-      ScrollTrigger.refresh();
-    }
   }, 150);
 }
 
 window.addEventListener("resize", handleResize);
-window.addEventListener("orientationchange", handleResize);
 
 document.addEventListener("DOMContentLoaded", () => {
   preloadImages(() => {
