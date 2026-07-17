@@ -97,19 +97,20 @@ function positionOverlay() {
   overlayEl.style.width = `${screenWidth}px`;
   overlayEl.style.height = `${screenHeight}px`;
 
+  // الحجم ثابت (مبني على مقاس الشاشة نفسها بس)، بدون أي تصغير إضافي
+  // بسبب عدد الفولدرات — لو ما كفت المساحة، بيزيد عدد الأعمدة بدل
+  // ما يصغر الحجم
   const scaleW = clampPx(0.6, screenWidth / 1000, 1.6);
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
-  let scale = Math.min(scaleW, scaleH);
+  const scale = Math.min(scaleW, scaleH);
 
   const FOLDER_COUNT = FOLDERS.length;
 
-  // نحسب الارتفاع المطلوب فعلياً بناءً على نفس المكونات يلي بترسمها CSS:
-  // padding علوي/سفلي للخانة + حجم الأيقونة + مسافة + سطرين نص كحد أقصى
   function computeCellHeight(s) {
     const iconSize = clampPx(20, 46 * s, 60);
     const fontSize = clampPx(8, 11 * s, 13);
-    const labelTwoLines = fontSize * 1.25 * 2; // -webkit-line-clamp: 2
-    const cellPaddingVertical = 12; // 6px top + 6px bottom من CSS
+    const labelTwoLines = fontSize * 1.25 * 2;
+    const cellPaddingVertical = 12;
     const labelMarginTop = 5;
     return cellPaddingVertical + iconSize + labelMarginTop + labelTwoLines;
   }
@@ -118,22 +119,24 @@ function positionOverlay() {
   const padBottomEstimate = clampPx(30, 46 * scale, 60);
   const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
 
-  let cellHeight = computeCellHeight(scale);
-  let gapEstimate = clampPx(2, 8 * scale, 14);
-  let neededHeight = FOLDER_COUNT * cellHeight + (FOLDER_COUNT - 1) * gapEstimate;
+  const cellHeight = computeCellHeight(scale);
+  const gapEstimate = clampPx(2, 8 * scale, 14);
 
-  // لو ما كفت المساحة، منصغر scale تدريجياً (خطوات صغيرة) لحد ما يتساوى
-  // الاحتياج مع المساحة المتاحة فعلياً — أدق من معادلة نسبة واحدة مباشرة
-  let iterations = 0;
-  while (neededHeight > availableHeight && scale > 0.15 && iterations < 30) {
-    scale -= 0.02;
-    cellHeight = computeCellHeight(scale);
-    gapEstimate = clampPx(2, 8 * scale, 14);
-    neededHeight = FOLDER_COUNT * cellHeight + (FOLDER_COUNT - 1) * gapEstimate;
-    iterations++;
+  // نحدد أقل عدد أعمدة كافي حتى كل الفولدرات تتسع عمودياً بنفس الحجم
+  // الثابت، بدل ما نصغر الحجم نفسه
+  let cols = 1;
+  for (let tryCols = 1; tryCols <= 3; tryCols++) {
+    const rows = Math.ceil(FOLDER_COUNT / tryCols);
+    const neededHeight = rows * cellHeight + (rows - 1) * gapEstimate;
+    if (neededHeight <= availableHeight || tryCols === 3) {
+      cols = tryCols;
+      break;
+    }
   }
 
-  overlayEl.style.setProperty("--icon-rows", FOLDER_COUNT);
+  const rows = Math.ceil(FOLDER_COUNT / cols);
+
+  overlayEl.style.setProperty("--icon-rows", rows);
   overlayEl.style.setProperty("--icon-size", `${clampPx(20, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-cell-width", `${clampPx(58, 92 * scale, 110)}px`);
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
