@@ -1,14 +1,13 @@
-/* دعم الـ dynamic viewport height (يحل مشكلة نط الشاشة عند ظهور/اختفاء
-   شريط العنوان بالمتصفح على الموبايل) */
-@supports (height: 100dvh) {
-  .laptop-sticky {
-    height: 100dvh;
-  }
-}
-
-/* موبايل: مسافة سكرول أقصر شوي حتى تناسب حجم الشاشة الأصغر */
+/* موبايل: مسافة سكرول أقصر شوي حتى تناسب حجم الشاشة الأصغر
+   (نفس وحدة dvh المستخدمة بالملف الرئيسي، بدون تضارب) */
 @media (max-width: 768px) {
   .laptop-section {
     height: 220vh;
+  }
+
+  @supports (height: 100dvh) {
+    .laptop-section {
+      height: 220dvh;
+    }
   }
 }

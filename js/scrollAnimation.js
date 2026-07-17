@@ -93,7 +93,11 @@ function preloadImages(onFirstFrameReady) {
 function getScrollProgress() {
   const rect = laptopSection.getBoundingClientRect();
   const totalScrollable = laptopSection.offsetHeight - window.innerHeight;
-  if (totalScrollable <= 0) return 1;
+
+  // لو القياس مش جاهز/منطقي بعد (مثلاً أثناء أول جزء من الميلي ثانية
+  // قبل ما يستقر تخطيط الصفحة)، منرجع 0 بدل 1 حتى ما "تقفز" الصورة
+  // غلط للفريم الأخير بالخطأ
+  if (totalScrollable <= 0) return 0;
 
   const scrolledPastTop = -rect.top;
   return Math.min(1, Math.max(0, scrolledPastTop / totalScrollable));
@@ -135,5 +139,11 @@ window.addEventListener("resize", handleResize);
 document.addEventListener("DOMContentLoaded", () => {
   preloadImages(() => {
     onScroll();
+    // إعادة حساب بعد ما يستقر التخطيط تماماً (مهم للموبايل حيث
+    // شريط عنوان المتصفح بياخذ لحظة ليستقر بعد أول تحميل)
+    setTimeout(() => {
+      resizeCanvas();
+      onScroll();
+    }, 300);
   });
 });
