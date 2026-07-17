@@ -37,7 +37,8 @@
   bottom: var(--icon-pad-bottom, 46px);
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap; /* يضل عمود واحد دايماً بدل ما يلتف لعمود ثاني */
+  flex-wrap: wrap;
+  align-content: flex-start;
   gap: var(--icon-gap, 18px);
   max-width: 65%;
 }
@@ -105,6 +106,24 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+}
+
+/* ---------- Backdrop blur when a window is open ---------- */
+
+.desktop-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 2; /* above icons, below windows */
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none; /* never blocks clicks — purely visual */
+  transition: opacity 0.25s ease;
+}
+
+.desktop-backdrop.is-active {
+  opacity: 1;
 }
 
 /* ---------- Windows 11-style application window ---------- */
@@ -203,6 +222,8 @@
 
 .window-content {
   flex: 1;
+  container-type: inline-size; /* يخلي أي محتوى جواها يقدر يتجاوب مع عرض النافذة نفسها */
+  container-name: window;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px 18px;

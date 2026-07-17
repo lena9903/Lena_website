@@ -52,7 +52,10 @@ function clampPx(min, val, max) {
   return Math.max(min, Math.min(val, max));
 }
 
-function computeImageContainRect() {
+// لازم تطابق تماماً منطق "cover" المستخدم بدالة drawFrame() بملف
+// scrollAnimation.js، حتى تحسب مكان شاشة اللابتوب الحقيقي صح بعد
+// ما صار في قص (crop) للصورة بدل "contain" القديمة.
+function computeImageCoverRect() {
   const img = typeof images !== "undefined" ? images[0] : null;
   if (!img || !img.naturalWidth) return null;
 
@@ -64,15 +67,15 @@ function computeImageContainRect() {
   let drawWidth, drawHeight, offsetX, offsetY;
 
   if (canvasRatio > imgRatio) {
-    drawHeight = ch;
-    drawWidth = ch * imgRatio;
-    offsetX = (cw - drawWidth) / 2;
-    offsetY = 0;
-  } else {
     drawWidth = cw;
     drawHeight = cw / imgRatio;
     offsetX = 0;
     offsetY = (ch - drawHeight) / 2;
+  } else {
+    drawHeight = ch;
+    drawWidth = ch * imgRatio;
+    offsetX = (cw - drawWidth) / 2;
+    offsetY = 0;
   }
 
   return { offsetX, offsetY, drawWidth, drawHeight };
@@ -82,7 +85,7 @@ function computeImageContainRect() {
 
 function positionOverlay() {
   if (!overlayEl) return;
-  const rect = computeImageContainRect();
+  const rect = computeImageCoverRect();
   if (!rect) return;
 
   const screenLeft = rect.offsetX + rect.drawWidth * SCREEN_RECT.xPct;
