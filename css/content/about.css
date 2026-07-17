@@ -276,9 +276,9 @@
     min-height: auto;
   }
 
-  .about-pro-left {
-    width: 64px;
-    height: 64px;
+.about-pro-left {
+    width: 44px;
+    height: 44px;
     flex-shrink: 0;
     margin: 0 auto;
     border-radius: 50%;
@@ -409,8 +409,8 @@
 }
 
 @container window (max-width: 480px) {
-  .window-content::after,
-  .window-content::before {
+  .window-content.has-scroll-hint::after,
+  .window-content.has-scroll-hint::before {
     opacity: 1;
   }
 }
