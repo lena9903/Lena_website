@@ -276,21 +276,21 @@
     min-height: auto;
   }
 
-.about-pro-left {
-    width: 130px;
-    height: 130px;
+  .about-pro-left {
+    width: 64px;
+    height: 64px;
     flex-shrink: 0;
-    margin: 0 auto; /* تتمركز بنص عرض النافذة */
+    margin: 0 auto;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
 
   .about-pro-image {
-    object-position: center 20%; /* يخلي الوجه ظاهر بالبانر القصير */
+    object-position: center 20%;
   }
 
- .about-pro-right {
+  .about-pro-right {
     justify-content: flex-start;
     align-items: center;
     text-align: center;
@@ -300,14 +300,19 @@
 
   .about-pro-typing-line {
     justify-content: center;
+    font-size: 12px;
+    min-height: 18px;
   }
 
   .about-pro-footer {
     justify-content: center;
+    font-size: 10px;
   }
 
   .about-pro-buttons {
     justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
   }
 
   .about-pro-greeting {
@@ -318,23 +323,9 @@
     font-size: 0.8em;
   }
 
-  .about-pro-typing-line {
-    font-size: 12px;
-    min-height: 18px;
-  }
-
   .about-pro-bio {
     font-size: 11px;
     line-height: 1.55;
-  }
-
-  .about-pro-footer {
-    font-size: 10px;
-  }
-
-  .about-pro-buttons {
-    gap: 8px;
-    margin-top: 5px;
   }
 
   .about-pro-btn {
@@ -350,7 +341,7 @@
     flex-direction: row;
   }
 
-.about-pro-left {
+  .about-pro-left {
     width: 76px;
     height: 76px;
     flex-shrink: 0;
@@ -359,6 +350,7 @@
     overflow: hidden;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
+
   .about-pro-right {
     padding: 8px 10px;
     gap: 4px;
@@ -376,5 +368,49 @@
   .about-pro-btn {
     padding: 5px 10px;
     font-size: 9.5px;
+  }
+}
+
+/* ---------- Scroll hint: simple fade + arrow at bottom, mobile only ---------- */
+
+.window-content {
+  position: relative;
+}
+
+.window-content::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent, rgba(20, 16, 18, 0.6));
+  pointer-events: none;
+  opacity: 0;
+}
+
+.window-content::before {
+  content: "⌄";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  animation: about-hint-bounce 1.4s ease-in-out infinite;
+}
+
+@keyframes about-hint-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(4px); }
+}
+
+@container window (max-width: 480px) {
+  .window-content::after,
+  .window-content::before {
+    opacity: 1;
   }
 }
