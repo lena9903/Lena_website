@@ -14,8 +14,6 @@
   display: flex;
   gap: 0;
   align-items: stretch;
-  /* compensates the -16px top/-16px bottom margin below so the image
-     reaches all the way to the window's edges with no gap */
   min-height: calc(100% + 32px);
   margin: -16px -18px;
 }
@@ -24,7 +22,7 @@
 
 .about-pro-left {
   flex-shrink: 0;
-  width: 220px;
+  width: clamp(90px, 32%, 220px);
   position: relative;
   overflow: hidden;
   align-self: stretch;
@@ -35,8 +33,6 @@
   height: 100%;
   position: relative;
 }
-
-
 
 .about-pro-image {
   width: 100%;
@@ -54,9 +50,8 @@
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* يتمركز المحتوى بنص النافذة عمودياً بدل ما يضل فراغ تحته */
+  justify-content: center;
   gap: 10px;
-  overflow-y: auto;
 }
 
 .about-pro-greeting {
@@ -116,7 +111,7 @@
   font-size: 13px;
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.75);
-  overflow-wrap: break-word; /* حماية إضافية لو في كلمة طويلة جداً بلا مسافات */
+  overflow-wrap: break-word;
 }
 
 .about-pro-highlight,
@@ -196,7 +191,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 8px; /* مسافة بسيطة عن الفقرة اللي فوقها للتباين */
+  margin-top: 8px;
 }
 
 .about-pro-btn {
@@ -263,8 +258,6 @@
   color: var(--rose-300);
 }
 
-/* Keeps the tulip emoji in its natural colors instead of inheriting
-   the heading's gradient text-fill */
 .about-pro-emoji {
   -webkit-text-fill-color: initial;
   background: none;
@@ -275,23 +268,28 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ---------- Responsive stacking when the window itself is narrow ---------- */
-
-/* ---------- Responsive scaling — keeps image-left / text-right layout
-   at ANY window size, just shrinks proportionally instead of stacking ---------- */
-
-.about-pro-left {
-  width: clamp(90px, 32%, 220px); /* يصغر تدريجياً بدل ما يوقف فجأة أو ينزل تحت */
-}
+/* ---------- Responsive scaling for narrow windows (mobile) ---------- */
 
 @container window (max-width: 480px) {
+  .about-pro {
+    /* على الشاشات الضيقة منسيب السكرول لـ .window-content فقط،
+       حتى ما يصير تعارض توسيط + سكرول مزدوج يخبي بداية أو نهاية
+       المحتوى */
+    min-height: auto;
+  }
+
+  .about-pro-left {
+    width: clamp(70px, 30%, 100px);
+  }
+
   .about-pro-right {
+    justify-content: flex-start; /* بدل center — يمنع اختفاء أول/آخر جزء من المحتوى */
     padding: 14px 12px;
-    gap: 8px;
+    gap: 7px;
   }
 
   .about-pro-greeting {
-    font-size: clamp(16px, 5.5vw, 22px);
+    font-size: clamp(15px, 5vw, 20px);
   }
 
   .about-pro-emoji {
@@ -299,27 +297,34 @@
   }
 
   .about-pro-typing-line {
-    font-size: clamp(11px, 3.2vw, 14px);
+    font-size: clamp(10px, 3vw, 13px);
+    min-height: 20px;
   }
 
   .about-pro-bio {
-    font-size: clamp(10px, 2.8vw, 12px);
-    line-height: 1.6;
+    font-size: clamp(9.5px, 2.6vw, 11.5px);
+    line-height: 1.5;
+  }
+
+  .about-pro-footer {
+    font-size: 9.5px;
+    gap: 10px;
   }
 
   .about-pro-buttons {
-    gap: 8px;
+    gap: 6px;
+    margin-top: 4px;
   }
 
   .about-pro-btn {
-    padding: 7px 12px;
-    font-size: clamp(10px, 2.8vw, 12px);
+    padding: 6px 12px;
+    font-size: clamp(9.5px, 2.6vw, 11.5px);
   }
 }
 
 @container window (max-width: 340px) {
   .about-pro-left {
-    width: clamp(70px, 30%, 90px);
+    width: clamp(60px, 28%, 80px);
   }
 
   .about-pro-right {
