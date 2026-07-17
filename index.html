@@ -27,15 +27,19 @@
 <body>
 
   <section class="laptop-section" id="laptop-section">
-    <div class="laptop-sticky">
-      <canvas id="laptop-canvas"></canvas>
+    <canvas id="laptop-canvas"></canvas>
 
-      <!-- Windows-style interactive desktop — appears once the animation finishes -->
-      <div class="desktop-overlay" id="desktop-overlay">
-        <div class="desktop-icons" id="desktop-icons"></div>
-        <div class="desktop-backdrop" id="desktop-backdrop"></div>
-        <div class="desktop-windows" id="desktop-windows"></div>
-      </div>
+    <!-- تلميح بسيط يوضح للزائر إنه يسحب، يختفي أول ما يبلش يسحب -->
+    <div class="drag-hint" id="drag-hint">
+      <span class="drag-hint-arrow">→</span>
+      اسحبي لليمين لفتح اللابتوب
+    </div>
+
+    <!-- Windows-style interactive desktop — appears once the animation finishes -->
+    <div class="desktop-overlay" id="desktop-overlay">
+      <div class="desktop-icons" id="desktop-icons"></div>
+      <div class="desktop-backdrop" id="desktop-backdrop"></div>
+      <div class="desktop-windows" id="desktop-windows"></div>
     </div>
   </section>
 

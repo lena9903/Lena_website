@@ -408,17 +408,17 @@ function focusWindow(id) {
 
 /* ---------- Show/hide overlay once the animation is fully finished ---------- */
 function initDesktopScrollWatcher() {
-  // بيقرأ نسبة التقدم مباشرة من scrollAnimation.js (بدون أي مكتبة خارجية)
-  window.addEventListener(
-    "scroll",
-    () => {
-      const progress = window.laptopScrollProgress || 0;
-      const isComplete = progress >= 0.99;
-      overlayEl.classList.toggle("is-active", isComplete);
-      if (isComplete) positionOverlay();
-    },
-    { passive: true }
-  );
+  // ما عاد في scroll إطلاقاً — منراقب window.laptopScrollProgress
+  // مباشرة عبر حلقة رسم مستمرة (نفس مبدأ requestAnimationFrame
+  // المستخدم بملف scrollAnimation.js)
+  function tick() {
+    const progress = window.laptopScrollProgress || 0;
+    const isComplete = progress >= 0.99;
+    overlayEl.classList.toggle("is-active", isComplete);
+    if (isComplete) positionOverlay();
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 }
 
 /* ---------- Init ---------- */

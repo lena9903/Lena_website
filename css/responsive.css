@@ -1,13 +1,14 @@
-/* موبايل: مسافة سكرول أقصر شوي حتى تناسب حجم الشاشة الأصغر
-   (نفس وحدة dvh المستخدمة بالملف الرئيسي، بدون تضارب) */
-@media (max-width: 768px) {
+@supports (height: 100dvh) {
+  html, body,
   .laptop-section {
-    height: 220vh;
+    height: 100dvh;
   }
+}
 
-  @supports (height: 100dvh) {
-    .laptop-section {
-      height: 220dvh;
-    }
+@media (max-width: 480px) {
+  .drag-hint {
+    font-size: 11px;
+    padding: 8px 14px;
+    bottom: 8%;
   }
 }
