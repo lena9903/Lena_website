@@ -82,9 +82,9 @@ function preloadImages(onFirstFrameReady) {
     images.push(img);
   }
 }
-
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.normalizeScroll(true); // fixes broken/unreliable scrub on iOS Safari (position:sticky + touch)
 
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
