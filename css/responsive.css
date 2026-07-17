@@ -1,8 +1,9 @@
 /* دعم الـ dynamic viewport height (يحل مشكلة نط الشاشة عند ظهور/اختفاء
    شريط العنوان بالمتصفح على الموبايل) */
 @supports (height: 100dvh) {
+  .laptop-section,
   .laptop-sticky {
-    height: 100dvh;
+    min-height: 100dvh;
   }
 }
 

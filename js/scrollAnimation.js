@@ -8,7 +8,7 @@ const CONFIG = {
   framePrefix: "frame_",
   frameDigits: 4,
   frameExt: ".jpg",
-  bgColor: "#0b0b0c", // لازم يطابق --color-bg بملف variables.css
+  bgColor: "#0b0b0c",
 };
 
 function getFramePath(index) {
@@ -41,12 +41,9 @@ function drawFrame(index) {
   const img = images[index];
   if (!img || !img.complete || img.naturalWidth === 0) return;
 
-  // خلفية موحّدة تملأ أي شريط فاضي (letterbox) حتى ينسجم مع خلفية الصفحة
   ctx.fillStyle = CONFIG.bgColor;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  // "contain" fit: يعرض الصورة كاملة دايماً بدون أي قص،
-  // حتى على شاشات ضيقة وطويلة جداً (موبايل)
   const imgRatio = img.naturalWidth / img.naturalHeight;
   const canvasRatio = canvasWidth / canvasHeight;
 
@@ -82,9 +79,13 @@ function preloadImages(onFirstFrameReady) {
     images.push(img);
   }
 }
+
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.normalizeScroll(true); // fixes broken/unreliable scrub on iOS Safari (position:sticky + touch)
+
+  // Prevents ScrollTrigger from recalculating (and glitching) every time
+  // the mobile browser's address bar shows/hides during scroll.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
@@ -92,9 +93,12 @@ function initScrollAnimation() {
     ease: "none",
     scrollTrigger: {
       trigger: "#laptop-section",
+      pin: ".laptop-sticky",   // GSAP itself pins the element (fixed positioning)
+      pinSpacing: false,        // the outer section's own height already reserves scroll room
       start: "top top",
       end: "bottom bottom",
       scrub: 0.4,
+      anticipatePin: 1,
     },
     onUpdate: () => drawFrame(Math.round(playhead.frame)),
   });
@@ -102,11 +106,6 @@ function initScrollAnimation() {
 
 /* ============================================
    Responsive handling
-   - debounced resize: يمنع استدعاءات متكررة زيادة عن اللزوم
-     وقت السحب (drag) لتغيير حجم النافذة أو ظهور/اختفاء
-     شريط عنوان المتصفح على الموبايل
-   - ScrollTrigger.refresh(): يعيد حساب مسافة السكرول بعد أي
-     تغيّر بارتفاع الأقسام (مثلاً عند تفعيل breakpoint مختلف)
    ============================================ */
 let resizeTimeout;
 function handleResize() {
