@@ -101,42 +101,31 @@ function positionOverlay() {
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
   let scale = Math.min(scaleW, scaleH);
 
+  // عمود واحد إجباري دايماً (زي الشكل الأصلي) — منصغر الحجم لو لزم
+  // حتى الستة فولدرات يتسعوا عمودياً بعمود واحد بس
   const FOLDER_COUNT = FOLDERS.length;
   const padTopEstimate = clampPx(6, 12 * scale, 16);
   const padBottomEstimate = clampPx(30, 46 * scale, 60);
   const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
-
-  // نحدد كم عمود لازم (1، 2، أو 3) حتى الفولدرات كلها تتسع عمودياً،
-  // وترتيبها يضل صحيح دايماً (عمود كامل من فوق لتحت، وبعدين العمود التالي)
-  let cols = 1;
-  for (let tryCols = 1; tryCols <= 3; tryCols++) {
-    const rows = Math.ceil(FOLDER_COUNT / tryCols);
-    const cellEstimate = clampPx(56, 84 * scale, 100);
-    const gapEstimate = clampPx(8, 16 * scale, 22);
-    const neededHeight = rows * cellEstimate + (rows - 1) * gapEstimate;
-    if (neededHeight <= availableHeight || tryCols === 3) {
-      cols = tryCols;
-      break;
-    }
-  }
-
-  const rows = Math.ceil(FOLDER_COUNT / cols);
-  const cellEstimate = clampPx(56, 84 * scale, 100);
-  const gapEstimate = clampPx(8, 16 * scale, 22);
-  const neededHeight = rows * cellEstimate + (rows - 1) * gapEstimate;
+  const cellEstimate = clampPx(30, 68 * scale, 84);
+  const gapEstimate = clampPx(2, 8 * scale, 14);
+  const neededHeight = FOLDER_COUNT * cellEstimate + (FOLDER_COUNT - 1) * gapEstimate;
 
   if (neededHeight > availableHeight && neededHeight > 0) {
     scale = scale * (availableHeight / neededHeight);
   }
 
-overlayEl.style.setProperty("--icon-rows", rows);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 48 * scale, 60)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(30, 68 * scale, 84)}px`);
+  overlayEl.style.setProperty("--icon-rows", FOLDER_COUNT);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(20, 46 * scale, 60)}px`);
+  // عرض خانة الأيقونة أكبر نسبياً من ارتفاعها حتى يتسع الاسم الطويل
+  // (زي "Experience") على سطرين كاملين بدون قص
+  overlayEl.style.setProperty("--icon-cell-width", `${clampPx(58, 92 * scale, 110)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${clampPx(30, 66 * scale, 80)}px`);
   overlayEl.style.setProperty("--icon-gap", `${clampPx(2, 8 * scale, 14)}px`);
   overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
   overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
-  overlayEl.style.setProperty("--icon-font", `${clampPx(9, 12 * scale, 14)}px`);
+  overlayEl.style.setProperty("--icon-font", `${clampPx(8, 11 * scale, 13)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
   overlayEl.style.setProperty("--title-font", `${clampPx(9, 12 * scale, 13)}px`);
   overlayEl.style.setProperty("--content-font", `${clampPx(9, 12 * scale, 14)}px`);

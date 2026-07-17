@@ -29,25 +29,22 @@
 }
 
 /* ---------- Folder icons: top-left, vertical, Windows-style ---------- */
-
 .desktop-icons {
   position: absolute;
   top: var(--icon-pad-top, 20px);
   left: var(--icon-pad-left, 16px);
   bottom: var(--icon-pad-bottom, 46px);
-  display: grid;
-  grid-auto-flow: column; /* يملأ عمود كامل من فوق لتحت بترتيب صحيح، وبعدين ينتقل للعمود التالي */
-  grid-template-rows: repeat(var(--icon-rows, 6), var(--icon-cell, 84px));
-  grid-auto-columns: var(--icon-cell, 84px);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap; /* عمود واحد إجباري، ما يلتف لعمود ثاني أبداً */
   gap: var(--icon-gap, 18px);
   max-width: 65%;
 }
-
 .folder-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--icon-cell, 84px);
+  width: var(--icon-cell-width, 84px); /* عرض أوسع من الارتفاع، حتى الاسم الطويل يلف كامل */
   padding: 6px 4px;
   border-radius: 4px;
   border: 1px solid transparent;
