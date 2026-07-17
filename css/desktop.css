@@ -223,7 +223,7 @@
   background-color: #e81123;
 }
 
-..window-content {
+.window-content {
   flex: 1;
   container-type: inline-size; /* بدونها، كل قواعد @container window بملفات المحتوى (about.css وغيره) ما بتشتغل */
   container-name: window;
