@@ -276,20 +276,38 @@
     min-height: auto;
   }
 
-  .about-pro-left {
-    width: 100%;
-    height: 110px; /* بانر عريض وقصير بدل عمود جانبي ضيق */
+.about-pro-left {
+    width: 130px;
+    height: 130px;
     flex-shrink: 0;
+    margin: 0 auto; /* تتمركز بنص عرض النافذة */
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
 
   .about-pro-image {
     object-position: center 20%; /* يخلي الوجه ظاهر بالبانر القصير */
   }
 
-  .about-pro-right {
+ .about-pro-right {
     justify-content: flex-start;
+    align-items: center;
+    text-align: center;
     padding: 14px 16px;
     gap: 8px;
+  }
+
+  .about-pro-typing-line {
+    justify-content: center;
+  }
+
+  .about-pro-footer {
+    justify-content: center;
+  }
+
+  .about-pro-buttons {
+    justify-content: center;
   }
 
   .about-pro-greeting {
