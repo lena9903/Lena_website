@@ -147,3 +147,8 @@ function handleResize() {
 window.addEventListener("resize", handleResize);
 window.addEventListener("orientationchange", handleResize);
 
+document.addEventListener("DOMContentLoaded", () => {
+  preloadImages(() => {
+    initScrollAnimation();
+  });
+});
