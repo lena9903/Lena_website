@@ -12,7 +12,7 @@ const CONFIG = {
   frameDigits: 4,
   frameExt: ".jpg",
   bgColor: "#0b0b0c",
-  dragDistance: 900, // كبّرناها من 500 لـ 900 = سحب أطول = حركة أبطأ وأهدى
+  dragDistance: 700, // كبّرناها من 500 لـ 900 = سحب أطول = حركة أبطأ وأهدى
   wheelSensitivity: 1 / 600,
 };
 
@@ -57,18 +57,20 @@ function drawFrame(index) {
   const imgRatio = img.naturalWidth / img.naturalHeight;
   const canvasRatio = canvasWidth / canvasHeight;
 
+  // "cover" fit: يملأ الشاشة بالكامل بدون فراغ أسود، مع قص بسيط
+  // للحواف بدل ظهور شريط أسود فوق وتحت على شاشات الموبايل الطويلة
   let drawWidth, drawHeight, offsetX, offsetY;
 
   if (canvasRatio > imgRatio) {
-    drawHeight = canvasHeight;
-    drawWidth = canvasHeight * imgRatio;
-    offsetX = (canvasWidth - drawWidth) / 2;
-    offsetY = 0;
-  } else {
     drawWidth = canvasWidth;
     drawHeight = canvasWidth / imgRatio;
     offsetX = 0;
     offsetY = (canvasHeight - drawHeight) / 2;
+  } else {
+    drawHeight = canvasHeight;
+    drawWidth = canvasHeight * imgRatio;
+    offsetX = (canvasWidth - drawWidth) / 2;
+    offsetY = 0;
   }
 
   ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);

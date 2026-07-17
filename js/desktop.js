@@ -40,6 +40,7 @@ const ICONS = {
 /* ---------- DOM refs (assigned in initDesktop) ---------- */
 
 let overlayEl, desktopIconsEl, desktopWindowsEl, desktopBackdropEl;
+
 /* ---------- State ---------- */
 
 const openWindows = new Map();
@@ -51,7 +52,10 @@ function clampPx(min, val, max) {
   return Math.max(min, Math.min(val, max));
 }
 
-function computeImageContainRect() {
+// لازم تطابق تماماً منطق "cover" المستخدم بدالة drawFrame() بملف
+// scrollAnimation.js، حتى تحسب مكان شاشة اللابتوب الحقيقي صح بعد
+// ما صار في قص (crop) للصورة بدل "contain" القديمة.
+function computeImageCoverRect() {
   const img = typeof images !== "undefined" ? images[0] : null;
   if (!img || !img.naturalWidth) return null;
 
@@ -63,15 +67,15 @@ function computeImageContainRect() {
   let drawWidth, drawHeight, offsetX, offsetY;
 
   if (canvasRatio > imgRatio) {
-    drawHeight = ch;
-    drawWidth = ch * imgRatio;
-    offsetX = (cw - drawWidth) / 2;
-    offsetY = 0;
-  } else {
     drawWidth = cw;
     drawHeight = cw / imgRatio;
     offsetX = 0;
     offsetY = (ch - drawHeight) / 2;
+  } else {
+    drawHeight = ch;
+    drawWidth = ch * imgRatio;
+    offsetX = (cw - drawWidth) / 2;
+    offsetY = 0;
   }
 
   return { offsetX, offsetY, drawWidth, drawHeight };
@@ -81,7 +85,7 @@ function computeImageContainRect() {
 
 function positionOverlay() {
   if (!overlayEl) return;
-  const rect = computeImageContainRect();
+  const rect = computeImageCoverRect();
   if (!rect) return;
 
   const screenLeft = rect.offsetX + rect.drawWidth * SCREEN_RECT.xPct;
@@ -96,13 +100,28 @@ function positionOverlay() {
 
   const scaleW = clampPx(0.6, screenWidth / 1000, 1.6);
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
-  const scale = Math.min(scaleW, scaleH);
+  let scale = Math.min(scaleW, scaleH);
 
-  overlayEl.style.setProperty("--icon-size", `${clampPx(34, 52 * scale, 64)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(56, 84 * scale, 100)}px`);
-  overlayEl.style.setProperty("--icon-gap", `${clampPx(6, 12 * scale, 18)}px`);
-  overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
-  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(30, 46 * scale, 60)}px`);
+  // نتأكد إنه الستة فولدرات بيضلوا بعمود واحد دايماً بدون التفاف:
+  // منحسب كم مساحة عمودية متاحة فعلياً، ومنصغر الـ scale أكتر لو لزم
+  const FOLDER_COUNT = 6;
+  const padTopEstimate = clampPx(10, 20 * scale, 28);
+  const padBottomEstimate = clampPx(30, 46 * scale, 60);
+  const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
+  const cellEstimate = clampPx(56, 84 * scale, 100);
+  const gapEstimate = clampPx(8, 16 * scale, 22);
+  const neededHeight = FOLDER_COUNT * cellEstimate + (FOLDER_COUNT - 1) * gapEstimate;
+
+  if (neededHeight > availableHeight && neededHeight > 0) {
+    const shrinkFactor = availableHeight / neededHeight;
+    scale = scale * shrinkFactor;
+  }
+
+  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 52 * scale, 64)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${clampPx(34, 84 * scale, 100)}px`);
+  overlayEl.style.setProperty("--icon-gap", `${clampPx(4, 16 * scale, 22)}px`);
+  overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 20 * scale, 28)}px`);
+  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
   overlayEl.style.setProperty("--icon-font", `${clampPx(9, 12 * scale, 14)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
@@ -164,8 +183,6 @@ function createWindow(folder) {
     ? Math.min(overlayEl.clientHeight * override.heightRatio, override.maxHeight)
     : Math.min(overlayEl.clientHeight * 0.72, 240);
 
-  // Open centered inside the laptop screen (with a small cascade per
-  // extra window so stacked windows don't sit exactly on top of each other)
   const centerLeft = (overlayEl.clientWidth - defaultWidth) / 2 + cascade;
   const centerTop = (overlayEl.clientHeight - defaultHeight) / 2 + cascade;
 
@@ -330,8 +347,6 @@ function enableResize(windowEl) {
   });
 }
 
-
-
 /* ---------- DesktopManager ---------- */
 
 /* Shows the blur backdrop whenever at least one non-minimized window is open */
@@ -347,11 +362,13 @@ function openFolder(folder) {
   if (openWindows.has(folder.id)) {
     openWindows.get(folder.id).classList.remove("is-minimized");
     focusWindow(folder.id);
+    updateBackdrop();
     return;
   }
   const el = createWindow(folder);
   openWindows.set(folder.id, el);
   focusWindow(folder.id);
+  updateBackdrop();
 }
 
 function closeWindow(id) {
@@ -360,11 +377,13 @@ function closeWindow(id) {
   el.classList.remove("is-open");
   setTimeout(() => el.remove(), 200);
   openWindows.delete(id);
+  updateBackdrop();
 }
 
 function minimizeWindow(id) {
   const el = openWindows.get(id);
   if (el) el.classList.add("is-minimized");
+  updateBackdrop();
 }
 
 function toggleMaximize(id) {
@@ -407,6 +426,7 @@ function focusWindow(id) {
 }
 
 /* ---------- Show/hide overlay once the animation is fully finished ---------- */
+
 function initDesktopScrollWatcher() {
   // ما عاد في scroll إطلاقاً — منراقب window.laptopScrollProgress
   // مباشرة عبر حلقة رسم مستمرة (نفس مبدأ requestAnimationFrame
@@ -445,5 +465,3 @@ function initDesktop() {
 }
 
 document.addEventListener("DOMContentLoaded", initDesktop);
-
-
