@@ -2,22 +2,19 @@ body {
   background-color: var(--color-bg);
 }
 
+/* GSAP نفسها هلق بتتحكم بالتثبيت وبطول مسافة السكرول (pin: true بملف
+   scrollAnimation.js) — ما عاد في داعي لارتفاع يدوي بوحدة vh ولا sticky،
+   وهاد بالضبط اللي بيحل مشكلة شريط عنوان المتصفح على الموبايل */
 .laptop-section {
   position: relative;
-  height: 400vh;
-  background-color: var(--color-bg);
-}
-
-.laptop-sticky {
-  position: sticky;
-  top: 0;
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  background-color: var(--color-bg);
 }
 
 #laptop-canvas {
   width: 100%;
   height: 100%;
-  touch-action: pan-y; /* يضمن انه اللمس على الكانفس يسكرول عادي وما يتعارض معه */
+  touch-action: pan-y;
 }

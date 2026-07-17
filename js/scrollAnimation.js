@@ -11,6 +11,14 @@ const CONFIG = {
   bgColor: "#0b0b0c",
 };
 
+// كم ضعف من ارتفاع الشاشة تاخذ مسافة السكرول الكاملة للأنيميشن.
+// دالة (function) بدل رقم ثابت حتى GSAP تعيد حسابها صح عند أي
+// تغيّر بحجم الشاشة (بما فيها اختفاء/ظهور شريط عنوان الموبايل).
+const SCROLL_LENGTH_VH = 300;
+function getScrollEnd() {
+  return "+=" + window.innerHeight * (SCROLL_LENGTH_VH / 100);
+}
+
 function getFramePath(index) {
   const num = String(index).padStart(CONFIG.frameDigits, "0");
   return `${CONFIG.frameFolder}/${CONFIG.framePrefix}${num}${CONFIG.frameExt}`;
@@ -89,9 +97,11 @@ function initScrollAnimation() {
     ease: "none",
     scrollTrigger: {
       trigger: "#laptop-section",
+      pin: true,            // GSAP نفسها بتثبت العنصر وبتضيف مسافة السكرول اللازمة تلقائياً
       start: "top top",
-      end: "bottom bottom",
+      end: getScrollEnd,    // دالة بتتحسب من جديد تلقائياً عند أي refresh
       scrub: 0.4,
+      anticipatePin: 1,
     },
     onUpdate: () => drawFrame(Math.round(playhead.frame)),
   });

@@ -407,14 +407,13 @@ function focusWindow(id) {
 }
 
 /* ---------- Show/hide overlay once the animation is fully finished ---------- */
-
 function initDesktopScrollWatcher() {
   if (!window.ScrollTrigger) return;
 
   ScrollTrigger.create({
     trigger: "#laptop-section",
     start: "top top",
-    end: "bottom bottom",
+    end: typeof getScrollEnd === "function" ? getScrollEnd : "bottom bottom",
     onUpdate: (self) => {
       const isComplete = self.progress >= 0.99;
       overlayEl.classList.toggle("is-active", isComplete);
