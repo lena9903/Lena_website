@@ -35,10 +35,10 @@
   top: var(--icon-pad-top, 20px);
   left: var(--icon-pad-left, 16px);
   bottom: var(--icon-pad-bottom, 46px);
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  display: grid;
+  grid-auto-flow: column; /* يملأ عمود كامل من فوق لتحت بترتيب صحيح، وبعدين ينتقل للعمود التالي */
+  grid-template-rows: repeat(var(--icon-rows, 6), var(--icon-cell, 84px));
+  grid-auto-columns: var(--icon-cell, 84px);
   gap: var(--icon-gap, 18px);
   max-width: 65%;
 }

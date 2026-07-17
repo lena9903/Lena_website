@@ -99,13 +99,42 @@ function positionOverlay() {
 
   const scaleW = clampPx(0.6, screenWidth / 1000, 1.6);
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
-  const scale = Math.min(scaleW, scaleH);
+  let scale = Math.min(scaleW, scaleH);
 
-  overlayEl.style.setProperty("--icon-size", `${clampPx(34, 52 * scale, 64)}px`);
-  overlayEl.style.setProperty("--icon-cell", `${clampPx(56, 84 * scale, 100)}px`);
-  overlayEl.style.setProperty("--icon-gap", `${clampPx(6, 12 * scale, 18)}px`);
+  const FOLDER_COUNT = FOLDERS.length;
+  const padTopEstimate = clampPx(6, 12 * scale, 16);
+  const padBottomEstimate = clampPx(30, 46 * scale, 60);
+  const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
+
+  // نحدد كم عمود لازم (1، 2، أو 3) حتى الفولدرات كلها تتسع عمودياً،
+  // وترتيبها يضل صحيح دايماً (عمود كامل من فوق لتحت، وبعدين العمود التالي)
+  let cols = 1;
+  for (let tryCols = 1; tryCols <= 3; tryCols++) {
+    const rows = Math.ceil(FOLDER_COUNT / tryCols);
+    const cellEstimate = clampPx(56, 84 * scale, 100);
+    const gapEstimate = clampPx(8, 16 * scale, 22);
+    const neededHeight = rows * cellEstimate + (rows - 1) * gapEstimate;
+    if (neededHeight <= availableHeight || tryCols === 3) {
+      cols = tryCols;
+      break;
+    }
+  }
+
+  const rows = Math.ceil(FOLDER_COUNT / cols);
+  const cellEstimate = clampPx(56, 84 * scale, 100);
+  const gapEstimate = clampPx(8, 16 * scale, 22);
+  const neededHeight = rows * cellEstimate + (rows - 1) * gapEstimate;
+
+  if (neededHeight > availableHeight && neededHeight > 0) {
+    scale = scale * (availableHeight / neededHeight);
+  }
+
+  overlayEl.style.setProperty("--icon-rows", rows);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(22, 52 * scale, 64)}px`);
+  overlayEl.style.setProperty("--icon-cell", `${clampPx(34, 84 * scale, 100)}px`);
+  overlayEl.style.setProperty("--icon-gap", `${clampPx(4, 16 * scale, 22)}px`);
   overlayEl.style.setProperty("--icon-pad-top", `${clampPx(6, 12 * scale, 16)}px`);
-  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(30, 46 * scale, 60)}px`);
+  overlayEl.style.setProperty("--icon-pad-bottom", `${clampPx(20, 46 * scale, 60)}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
   overlayEl.style.setProperty("--icon-font", `${clampPx(9, 12 * scale, 14)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);

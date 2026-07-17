@@ -57,20 +57,21 @@ function drawFrame(index) {
   const imgRatio = img.naturalWidth / img.naturalHeight;
   const canvasRatio = canvasWidth / canvasHeight;
 
-  // "cover" fit: يملأ الشاشة بالكامل بدون فراغ أسود، مع قص بسيط
-  // للحواف بدل ظهور شريط أسود فوق وتحت على شاشات الموبايل الطويلة
+  // "contain" fit: يعرض الصورة كاملة دايماً بدون أي قص، حتى على
+  // شاشات ضيقة وطويلة (موبايل) — لازم يطابق computeImageContainRect()
+  // بملف desktop.js تماماً حتى مكان الأيقونات يضل صح
   let drawWidth, drawHeight, offsetX, offsetY;
 
   if (canvasRatio > imgRatio) {
-    drawWidth = canvasWidth;
-    drawHeight = canvasWidth / imgRatio;
-    offsetX = 0;
-    offsetY = (canvasHeight - drawHeight) / 2;
-  } else {
     drawHeight = canvasHeight;
     drawWidth = canvasHeight * imgRatio;
     offsetX = (canvasWidth - drawWidth) / 2;
     offsetY = 0;
+  } else {
+    drawWidth = canvasWidth;
+    drawHeight = canvasWidth / imgRatio;
+    offsetX = 0;
+    offsetY = (canvasHeight - drawHeight) / 2;
   }
 
   ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
