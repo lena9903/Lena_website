@@ -90,6 +90,7 @@ function preloadImages(onFirstFrameReady) {
 
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   gsap.to(playhead, {
     frame: CONFIG.frameCount - 1,
