@@ -311,37 +311,36 @@
   }
 
   .about-pro-greeting {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .about-pro-emoji {
-    font-size: 0.85em;
+    font-size: 0.8em;
   }
 
   .about-pro-typing-line {
-    font-size: 14px;
-    min-height: 22px;
+    font-size: 12px;
+    min-height: 18px;
   }
 
   .about-pro-bio {
-    font-size: 12.5px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.55;
   }
 
   .about-pro-footer {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .about-pro-buttons {
-    gap: 10px;
-    margin-top: 6px;
+    gap: 8px;
+    margin-top: 5px;
   }
 
   .about-pro-btn {
-    padding: 8px 16px;
-    font-size: 12.5px;
+    padding: 7px 14px;
+    font-size: 11px;
   }
-}
 
 @media (max-width: 480px) and (orientation: landscape) {
   /* موبايل بالوضع الأفقي: المساحة العمودية ضيقة جداً، فبنرجع للتصميم
