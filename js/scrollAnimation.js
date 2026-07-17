@@ -85,13 +85,15 @@ function preloadImages(onFirstFrameReady) {
 function initScrollAnimation() {
   gsap.registerPlugin(ScrollTrigger);
 
-  // بيوقف مراقبة ScrollTrigger الداخلية لحدث "resize" تحديداً — هاي هي
-  // نفسها المسؤولة عن القفزة للبداية على iOS Safari (شريط عنوان
-  // المتصفح بيختفي = تغيّر بالارتفاع = ScrollTrigger كانت تسوي refresh
-  // تلقائي من جوا، بغض النظر عن أي كود resize كتبناه إحنا).
   ScrollTrigger.config({
     autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
   });
+
+  // الحل الرسمي من GSAP لمشكلة "رجوع السكرول للبداية عند رفع الإصبع"
+  // على iOS Safari مع pin. لازم تنادى قبل إنشاء أي ScrollTrigger.
+  if (ScrollTrigger.isTouch) {
+    ScrollTrigger.normalizeScroll(true);
+  }
 
   const scrollEndPx = window.innerHeight * (SCROLL_LENGTH_VH / 100);
 
