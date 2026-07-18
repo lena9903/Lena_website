@@ -73,3 +73,22 @@ window.FolderContent.skills = `
     </div>
   </div>
 `;
+
+window.FolderInit.skills = function (windowEl) {
+  // ---------- Scroll hint: shows/hides automatically based on scroll position ----------
+  try {
+    const scrollBox = windowEl.querySelector(".window-content");
+    if (scrollBox) {
+      function refreshScrollHint() {
+        const hasScrolledAtAll = scrollBox.scrollTop > 0;
+        const hasMore =
+          scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight > 6;
+        scrollBox.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
+      }
+      scrollBox.addEventListener("scroll", refreshScrollHint, { passive: true });
+      setTimeout(refreshScrollHint, 200);
+    }
+  } catch (err) {
+    /* أي خطأ هون ما بأثر على باقي الصفحة إطلاقاً */
+  }
+};
