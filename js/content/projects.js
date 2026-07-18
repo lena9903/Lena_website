@@ -102,6 +102,7 @@ window.FolderContent.projects = `
 window.FolderInit.projects = function (windowEl) {
   const listItems = windowEl.querySelectorAll(".project-list-item");
   const detailsPane = windowEl.querySelector("#projects-details-pane");
+  const listBox = windowEl.querySelector(".projects-list");
 
   function selectProject(id) {
     const project = PROJECTS_DATA.find((p) => p.id === id);
@@ -109,9 +110,11 @@ window.FolderInit.projects = function (windowEl) {
 
     detailsPane.innerHTML = buildProjectDetails(project);
 
-    listItems.forEach((item) => {
+    windowEl.querySelectorAll(".project-list-item").forEach((item) => {
       item.classList.toggle("is-active", item.dataset.projectId === id);
     });
+
+    refreshDetailsHint();
   }
 
   listItems.forEach((item) => {
@@ -121,23 +124,42 @@ window.FolderInit.projects = function (windowEl) {
     });
   });
 
-  // ---------- Scroll hint (same behavior as About Me / Skills) ----------
+  // ---------- Vertical scroll hint for the details pane (same as About Me) ----------
+  function refreshDetailsHint() {
+    if (!detailsPane) return;
+    const hasScrolledAtAll = detailsPane.scrollTop > 0;
+    const hasMore =
+      detailsPane.scrollHeight - detailsPane.scrollTop - detailsPane.clientHeight > 6;
+    detailsPane.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
+  }
+
   try {
-    const scrollBox = detailsPane;
-    if (scrollBox) {
-      function refreshScrollHint() {
-        const hasScrolledAtAll = scrollBox.scrollTop > 0;
-        const hasMore =
-          scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight > 6;
-        scrollBox.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
-      }
-      scrollBox.addEventListener("scroll", refreshScrollHint, { passive: true });
+    if (detailsPane) {
+      detailsPane.addEventListener("scroll", refreshDetailsHint, { passive: true });
 
-      // نعيد ربط المؤشر كل مرة يتغير فيها المشروع المختار (المحتوى بيتغير)
-      const observer = new MutationObserver(() => setTimeout(refreshScrollHint, 50));
-      observer.observe(scrollBox, { childList: true });
+      const observer = new MutationObserver(() => setTimeout(refreshDetailsHint, 50));
+      observer.observe(detailsPane, { childList: true });
 
-      setTimeout(refreshScrollHint, 200);
+      setTimeout(refreshDetailsHint, 200);
+    }
+  } catch (err) {
+    /* لا شيء */
+  }
+
+  // ---------- Horizontal scroll hint for the project list (mobile) ----------
+  function refreshListHint() {
+    if (!listBox) return;
+    const hasScrolledAtAll = listBox.scrollLeft > 0;
+    const hasMore =
+      listBox.scrollWidth - listBox.scrollLeft - listBox.clientWidth > 6;
+    listBox.classList.toggle("has-h-scroll-hint", hasMore && !hasScrolledAtAll);
+  }
+
+  try {
+    if (listBox) {
+      listBox.addEventListener("scroll", refreshListHint, { passive: true });
+      window.addEventListener("resize", refreshListHint);
+      setTimeout(refreshListHint, 200);
     }
   } catch (err) {
     /* لا شيء */
