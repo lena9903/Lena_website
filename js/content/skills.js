@@ -52,7 +52,7 @@ function buildSkillFile(skill) {
 window.FolderContent.skills = `
   <div class="skills-explorer">
     <div class="skills-group">
-      <div class="skills-group-header">AI</div>
+      <div class="skills-group-header">Artificial Intelligence</div>
       <div class="skills-grid">
         ${AI_SKILLS.map(buildSkillFile).join("")}
       </div>
