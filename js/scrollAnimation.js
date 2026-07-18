@@ -117,6 +117,11 @@ let dragStartX = 0;
 let progressAtDragStart = 0;
 
 laptopSection.addEventListener("pointerdown", (e) => {
+  // إذا اللمسة بلشت جوا سطح المكتب (فولدر، نافذة، أي عنصر تفاعلي بالديسكتوب)،
+  // ما منسحب اللابتوب إطلاقاً — هيك السحب الأفقي جوا النوافذ (زي قائمة
+  // المشاريع) بيضل يشتغل عادي بدون ما يقفل/يحرك أنيميشن اللابتوب
+  if (e.target.closest(".desktop-overlay")) return;
+
   isDragging = true;
   dragStartX = e.clientX;
   progressAtDragStart = progress;
