@@ -36,7 +36,7 @@ image:
     name: "Loan Approval Prediction",
     subtitle: "Data Mining Course Project",
     date: "2025",
-    image: "https://res.cloudinary.com/maz4meys/image/upload/v1784405665/Untitled_design_9_hndvh0.png",
+    image: "https://res.cloudinary.com/maz4meys/image/upload/v1784405966/Untitled_design_11_tbhwmw.png",
 
     description:
       "Developed machine learning models to predict loan approval decisions. Performed data preprocessing including cleaning and feature engineering, then evaluated and compared Random Forest models using Python libraries such as Pandas and Scikit-learn.",
