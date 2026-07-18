@@ -71,6 +71,7 @@ function buildProjectDetails(project) {
           alt="${project.name}"
           class="project-details-image"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          onload="if (window.dispatchEvent) window.dispatchEvent(new Event('resize'));"
         />
         <div class="project-details-image-fallback" style="display:none;">🗂️</div>
       </div>
@@ -125,12 +126,17 @@ window.FolderInit.projects = function (windowEl) {
   });
 
   // ---------- Vertical scroll hint for the details pane (same as About Me) ----------
-  function refreshDetailsHint() {
+function refreshDetailsHint() {
     if (!detailsPane) return;
-    const hasScrolledAtAll = detailsPane.scrollTop > 0;
-    const hasMore =
-      detailsPane.scrollHeight - detailsPane.scrollTop - detailsPane.clientHeight > 6;
-    detailsPane.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
+    // تأخير بسيط حتى الصورة (لو موجودة) تخلص تحميل وتاخذ حجمها
+    // الحقيقي قبل ما نحسب — قبل هيك كان الحساب بيصير قبل ما ترتفع
+    // الصورة لحجمها، فيطلع النتيجة غلط أحياناً
+    requestAnimationFrame(() => {
+      const hasScrolledAtAll = detailsPane.scrollTop > 0;
+      const hasMore =
+        detailsPane.scrollHeight - detailsPane.scrollTop - detailsPane.clientHeight > 4;
+      detailsPane.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
+    });
   }
 
   try {
