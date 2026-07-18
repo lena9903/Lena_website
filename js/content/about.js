@@ -112,10 +112,12 @@ const roles = ["App Developer", "AI Enthusiast"];
   try {
     const scrollBox = windowEl.querySelector(".window-content");
     if (scrollBox) {
-      function refreshScrollHint() {
+function refreshScrollHint() {
+        // بمجرد ما المستخدم يبلش يسكرول (حتى لو بكسل واحد بس)، السهم بيختفي فوراً
+        const hasScrolledAtAll = scrollBox.scrollTop > 0;
         const hasMore =
           scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight > 6;
-        scrollBox.classList.toggle("has-scroll-hint", hasMore);
+        scrollBox.classList.toggle("has-scroll-hint", hasMore && !hasScrolledAtAll);
       }
       scrollBox.addEventListener("scroll", refreshScrollHint, { passive: true });
       setTimeout(refreshScrollHint, 200);
