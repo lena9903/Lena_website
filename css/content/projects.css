@@ -316,3 +316,19 @@
 .projects-list.has-h-scroll-hint::before {
   opacity: 1;
 }
+
+/* ---------- Fix: prevent double-nested scrolling ----------
+   .window-content (from desktop.css) has its own overflow-y: auto,
+   which conflicts with .projects-details-pane's own scroll below it.
+   This forces the ONLY scroll container here to be the details pane,
+   so our scroll-hint detection (which watches the pane, not the
+   outer window) works correctly. */
+.window-content:has(.projects-explorer) {
+  overflow: hidden;
+  padding: 0;
+}
+
+.window-content:has(.projects-explorer) .projects-explorer {
+  margin: 0; /* الحيلة السابقة (margin سالب لتعويض padding الأب) ما عادت لازمة بما إنه الأب صار padding: 0 */
+  height: 100%;
+}
