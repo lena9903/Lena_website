@@ -341,9 +341,9 @@
     flex-direction: row;
   }
 
-  .about-pro-left {
-    width: 200px;
-    height: 200px;
+.about-pro-left {
+    width: 56px;
+    height: 56px;
     flex-shrink: 0;
     margin: 0 auto;
     border-radius: 50%;
