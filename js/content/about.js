@@ -49,8 +49,9 @@ window.FolderContent.about = `
           Get in Touch
           <span class="about-pro-btn-arrow">→</span>
         </button>
-        <button class="about-pro-btn about-pro-btn-secondary">
-          Download CV
+   <button class="about-pro-btn about-pro-btn-secondary" id="about-cv-btn">
+          <span class="cv-btn-label">Download CV</span>
+          <span class="cv-btn-check">✓</span>
         </button>
       </div>
     </div>
@@ -106,6 +107,56 @@ const roles = ["App Developer", "AI Enthusiast"];
         openFolder({ id: "contact", label: "Contact" });
       }
     });
+  }
+  // ---------- Download CV: confetti + checkmark celebration ----------
+  const cvBtn = windowEl.querySelector("#about-cv-btn");
+  if (cvBtn) {
+    cvBtn.addEventListener("click", () => {
+      // 1) يبدأ التحميل الفعلي فوراً
+      const link = document.createElement("a");
+      link.href = "assets/cv/Lena_Abdulrazak_CV.pdf";
+      link.download = "Lena_Abdulrazak_CV.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // 2) الزر يتحول لعلامة صح خضراء لثانيتين
+      cvBtn.classList.add("is-downloaded");
+      setTimeout(() => cvBtn.classList.remove("is-downloaded"), 2000);
+
+      // 3) رشة كونفيتي بسيطة حوالين الزر
+      spawnConfetti(cvBtn);
+    });
+  }
+
+  function spawnConfetti(originEl) {
+    const rect = originEl.getBoundingClientRect();
+    const parentRect = windowEl.getBoundingClientRect();
+    const originX = rect.left - parentRect.left + rect.width / 2;
+    const originY = rect.top - parentRect.top + rect.height / 2;
+
+    const colors = ["#e87a93", "#f3aebb", "#ffffff", "#ea8ea0", "#fbe4e9"];
+    const pieceCount = 16;
+
+    for (let i = 0; i < pieceCount; i++) {
+      const piece = document.createElement("span");
+      piece.className = "cv-confetti-piece";
+
+      const angle = (Math.PI * 2 * i) / pieceCount + Math.random() * 0.5;
+      const distance = 40 + Math.random() * 50;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance - 20;
+
+      piece.style.left = `${originX}px`;
+      piece.style.top = `${originY}px`;
+      piece.style.setProperty("--dx", `${dx}px`);
+      piece.style.setProperty("--dy", `${dy}px`);
+      piece.style.background = colors[i % colors.length];
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      windowEl.appendChild(piece);
+      setTimeout(() => piece.remove(), 900);
+    }
   }
 
 // ---------- Scroll hint: shows/hides automatically based on scroll position ----------

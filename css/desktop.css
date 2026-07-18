@@ -114,19 +114,7 @@
 /* ---------- Backdrop blur when a window is open ---------- */
 
 .desktop-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 2; /* above icons, below windows */
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  opacity: 0;
-  pointer-events: none; /* never blocks clicks — purely visual */
-  transition: opacity 0.25s ease;
-}
-
-.desktop-backdrop.is-active {
-  opacity: 1;
+  display: none; /* البلر تم إلغاؤه بناءً على الطلب */
 }
 
 /* ---------- Windows 11-style application window ---------- */
