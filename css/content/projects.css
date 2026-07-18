@@ -404,6 +404,6 @@
 
 @container window (max-width: 480px) {
   .project-details-title {
-    font-size: 22px;
+    font-size: 26px;
   }
 }
