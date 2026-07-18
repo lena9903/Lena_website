@@ -121,3 +121,35 @@
     font-size: 9px;
   }
 }
+
+/* ---------- Hover glow + tilt ---------- */
+
+.skill-file {
+  perspective: 400px;
+}
+
+.skill-file-icon {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transform-style: preserve-3d;
+}
+
+.skill-file:hover .skill-file-icon {
+  transform: rotateY(8deg) rotateX(-4deg) scale(1.08);
+  box-shadow: 0 6px 18px rgba(232, 122, 147, 0.5), 0 0 0 1px rgba(232, 122, 147, 0.6);
+}
+
+/* ---------- Staggered entrance animation ---------- */
+
+.skill-file {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: skill-file-enter 0.4s ease forwards;
+  animation-delay: calc(var(--stagger-index, 0) * 0.06s);
+}
+
+@keyframes skill-file-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

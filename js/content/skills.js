@@ -31,9 +31,9 @@ const OTHER_SKILLS = [
   { name: "Figma", img: "figma.png" },
 ];
 
-function buildSkillFile(skill) {
+function buildSkillFile(skill, index) {
   return `
-    <div class="skill-file">
+    <div class="skill-file" style="--stagger-index: ${index}">
       <div class="skill-file-icon">
         <span class="skill-file-fold"></span>
         <img
@@ -54,21 +54,21 @@ window.FolderContent.skills = `
     <div class="skills-group">
       <div class="skills-group-header">Artificial Intelligence</div>
       <div class="skills-grid">
-        ${AI_SKILLS.map(buildSkillFile).join("")}
+        ${AI_SKILLS.map((s, i) => buildSkillFile(s, i)).join("")}
       </div>
     </div>
 
     <div class="skills-group">
       <div class="skills-group-header">App Development</div>
       <div class="skills-grid">
-        ${APP_DEV_SKILLS.map(buildSkillFile).join("")}
+        ${APP_DEV_SKILLS.map((s, i) => buildSkillFile(s, i)).join("")}
       </div>
     </div>
 
     <div class="skills-group">
       <div class="skills-group-header">Other</div>
       <div class="skills-grid">
-        ${OTHER_SKILLS.map(buildSkillFile).join("")}
+        ${OTHER_SKILLS.map((s, i) => buildSkillFile(s, i)).join("")}
       </div>
     </div>
   </div>
