@@ -14,8 +14,8 @@ const PROJECTS_DATA = [
     subtitle: "Smart Home Energy Management System",
     date: "Aug 2025 – Jan 2026",
     badge: "🎓 Graduation Project",
-    image:
-      "https://res.cloudinary.com/maz4meys/image/upload/v1784400481/Untitled_design_7_nmq6mr.png",
+image:
+      "https://res.cloudinary.com/maz4meys/image/upload/v1784401115/Untitled_design_8_ba4ood.png",
     description:
       "LUMIN is an AI & IoT-powered app that helps households track their electricity usage, cut costs, and make smarter energy decisions. It gives real-time consumption monitoring, predicts upcoming bills with customizable budget alerts, offers AI-driven tips tailored to each user's habits, and forecasts solar energy production up to 2 years ahead (97% accuracy using XGBoost) with investment guidance based on expected returns.",
     tags: [

@@ -5,11 +5,13 @@
   --rose-500: #e87a93;
   --rose-400: #ea8ea0;
   --rose-300: #f3aebb;
+  --rose-600: #d15b78;
+  --rose-700: #b8455f;
 
   display: flex;
   gap: 0;
   height: 100%;
-  min-height: 0; /* نفس السبب — يسمح للأطفال جواها يفعّلوا السكرول صح */
+  min-height: 0;
   margin: -16px -18px;
 }
 
@@ -393,4 +395,7 @@
   .project-details-links {
     gap: 8px;
   }
+}
+.about-pro-btn {
+  text-decoration: none;
 }
