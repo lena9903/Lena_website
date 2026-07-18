@@ -47,7 +47,7 @@ image:
     name: "Anis App",
     subtitle: "Entertainment app for kidney patients",
     date: "2024",
-    image: "assets/icons/projects/anis.png",
+    image: "https://res.cloudinary.com/maz4meys/image/upload/v1784406629/Untitled_design_16_w7rasx.png",
     description:
       "Focused on innovative UI/UX design to improve the patient experience, using creative thinking to design a user-friendly interface tailored to the emotional and practical needs of kidney patients.",
     tags: ["UI/UX Design", "Figma"],
