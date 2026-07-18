@@ -13,10 +13,35 @@ const PROJECTS_DATA = [
     name: "LUMIN",
     subtitle: "Smart Home Energy Management System",
     date: "Aug 2025 – Jan 2026",
-    image: "assets/icons/projects/lumin.png", // ضيفي الصورة بهالمسار
+    badge: "🎓 Graduation Project",
+    image:
+      "https://res.cloudinary.com/maz4meys/image/upload/v1784399208/Untitled_design_5_mt7l9d.png",
     description:
-      "A smart recommendation engine that analyzes solar production and device consumption data to suggest the optimal time and device for solar-powered operation. Includes an automated scheduler delivering personalized energy-saving tips on a weekly cadence, with real-time push notifications via Firebase Cloud Messaging.",
-    tags: ["Flutter", "Firebase", "Supabase", "Machine Learning"],
+      "LUMIN is an AI & IoT-powered app that helps households track their electricity usage, cut costs, and make smarter energy decisions. It gives real-time consumption monitoring, predicts upcoming bills with customizable budget alerts, offers AI-driven tips tailored to each user's habits, and forecasts solar energy production up to 2 years ahead (97% accuracy using XGBoost) with investment guidance based on expected returns.",
+    tags: [
+      "Google Colab",
+      "Flutter",
+      "Supabase",
+      "Firebase",
+      "Python",
+      "GitHub",
+      "FastAPI",
+      "Figma",
+    ],
+    links: [
+      {
+        label: "View Demo",
+        url: "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Flnkd.in%2Fdy99sPHs&urlhash=pCnh&mt=bf7o6STi7oT8q29r1-mE2SdrZAiAxsSIzpbQGgfoDeechOSoVJDeXCSRIELUgZjAPIYvEBsZfG81hC-IKjDhuRMFEAP8GFR68j0TTa6UPEUkWWlwu34eRVY95mE&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BWARbXYb2SKKEjKSjkpfy5w%3D%3D",
+        icon: "▶",
+        primary: true,
+      },
+      {
+        label: "Download Poster",
+        url: "https://drive.google.com/file/d/1vncwHe62l5ts6zxD1qibIyJdx2u4LTjX/view?usp=drive_link",
+        icon: "⬇",
+        primary: false,
+      },
+    ],
   },
   {
     id: "loan",
@@ -63,6 +88,33 @@ function buildProjectListItem(project, isActive) {
 }
 
 function buildProjectDetails(project) {
+  const badgeHtml = project.badge
+    ? `<span class="project-badge">${project.badge}</span>`
+    : "";
+
+  const linksHtml =
+    project.links && project.links.length
+      ? `
+        <div class="project-details-links">
+          ${project.links
+            .map(
+              (link) => `
+              
+                href="${link.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="project-link-btn ${link.primary ? "is-primary" : "is-secondary"}"
+              >
+                <span class="project-link-icon">${link.icon || "🔗"}</span>
+                ${link.label}
+              </a>
+            `
+            )
+            .join("")}
+        </div>
+      `
+      : "";
+
   return `
     <div class="project-details" data-project-id="${project.id}">
       <div class="project-details-image-wrap">
@@ -71,11 +123,11 @@ function buildProjectDetails(project) {
           alt="${project.name}"
           class="project-details-image"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          onload="if (window.dispatchEvent) window.dispatchEvent(new Event('resize'));"
         />
         <div class="project-details-image-fallback" style="display:none;">🗂️</div>
       </div>
 
+      ${badgeHtml}
       <h3 class="project-details-title">${project.name}</h3>
       <p class="project-details-subtitle">${project.subtitle}</p>
       <span class="project-details-date">${project.date}</span>
@@ -85,6 +137,8 @@ function buildProjectDetails(project) {
       <div class="project-details-tags">
         ${project.tags.map((tag) => `<span class="project-tag">${tag}</span>`).join("")}
       </div>
+
+      ${linksHtml}
     </div>
   `;
 }
@@ -126,11 +180,8 @@ window.FolderInit.projects = function (windowEl) {
   });
 
   // ---------- Vertical scroll hint for the details pane (same as About Me) ----------
-function refreshDetailsHint() {
+  function refreshDetailsHint() {
     if (!detailsPane) return;
-    // تأخير بسيط حتى الصورة (لو موجودة) تخلص تحميل وتاخذ حجمها
-    // الحقيقي قبل ما نحسب — قبل هيك كان الحساب بيصير قبل ما ترتفع
-    // الصورة لحجمها، فيطلع النتيجة غلط أحياناً
     requestAnimationFrame(() => {
       const hasScrolledAtAll = detailsPane.scrollTop > 0;
       const hasMore =
