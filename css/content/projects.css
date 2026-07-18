@@ -348,7 +348,7 @@
   margin-bottom: 6px;
 }
 
-/* ---------- Demo / Poster link buttons ---------- */
+/* ---------- Demo / Poster buttons — same look as About Me buttons ---------- */
 
 .project-details-links {
   display: flex;
@@ -357,45 +357,31 @@
   margin-top: 14px;
 }
 
-.project-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: "Sora", sans-serif;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+/* ---------- Poster download: reuse the same checkmark celebration as CV ---------- */
+
+.project-poster-btn {
+  position: relative;
+  overflow: visible;
 }
 
-.project-link-btn:hover {
-  transform: translateY(-2px);
+.project-poster-btn .cv-btn-check {
+  display: none;
 }
 
-.project-link-btn.is-primary {
-  background: linear-gradient(135deg, var(--rose-500), var(--rose-600));
-  color: #ffffff;
+.project-poster-btn.is-downloaded {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.6);
+  color: #22c55e;
 }
 
-.project-link-btn.is-primary:hover {
-  box-shadow: 0 8px 16px rgba(232, 122, 147, 0.45);
+.project-poster-btn.is-downloaded .cv-btn-label {
+  display: none;
 }
 
-.project-link-btn.is-secondary {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-}
-
-.project-link-btn.is-secondary:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.project-link-icon {
-  font-size: 10px;
+.project-poster-btn.is-downloaded .cv-btn-check {
+  display: inline-block;
+  font-weight: 700;
+  animation: cv-check-pop 0.35s ease;
 }
 
 @container window (max-width: 480px) {
@@ -404,8 +390,7 @@
     padding: 3px 8px;
   }
 
-  .project-link-btn {
-    font-size: 10px;
-    padding: 6px 13px;
+  .project-details-links {
+    gap: 8px;
   }
 }

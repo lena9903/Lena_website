@@ -15,7 +15,7 @@ const PROJECTS_DATA = [
     date: "Aug 2025 – Jan 2026",
     badge: "🎓 Graduation Project",
     image:
-      "https://res.cloudinary.com/maz4meys/image/upload/v1784400297/Untitled_design_6_vpbpen.png",
+      "https://res.cloudinary.com/maz4meys/image/upload/v1784400481/Untitled_design_7_nmq6mr.png",
     description:
       "LUMIN is an AI & IoT-powered app that helps households track their electricity usage, cut costs, and make smarter energy decisions. It gives real-time consumption monitoring, predicts upcoming bills with customizable budget alerts, offers AI-driven tips tailored to each user's habits, and forecasts solar energy production up to 2 years ahead (97% accuracy using XGBoost) with investment guidance based on expected returns.",
     tags: [
@@ -28,20 +28,8 @@ const PROJECTS_DATA = [
       "FastAPI",
       "Figma",
     ],
-    links: [
-      {
-        label: "View Demo",
-        url: "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Flnkd.in%2Fdy99sPHs&urlhash=pCnh&mt=bf7o6STi7oT8q29r1-mE2SdrZAiAxsSIzpbQGgfoDeechOSoVJDeXCSRIELUgZjAPIYvEBsZfG81hC-IKjDhuRMFEAP8GFR68j0TTa6UPEUkWWlwu34eRVY95mE&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BWARbXYb2SKKEjKSjkpfy5w%3D%3D",
-        icon: "▶",
-        primary: true,
-      },
-      {
-        label: "Download Poster",
-        url: "https://drive.google.com/file/d/1vncwHe62l5ts6zxD1qibIyJdx2u4LTjX/view?usp=drive_link",
-        icon: "⬇",
-        primary: false,
-      },
-    ],
+    demoUrl: "https://lumin-demo-version.netlify.app/",
+    posterFile: "assets/posters/lumin-poster.pdf",
   },
   {
     id: "loan",
@@ -92,16 +80,17 @@ function buildProjectDetails(project) {
     ? `<span class="project-badge">${project.badge}</span>`
     : "";
 
+  const demoBtnHtml = project.demoUrl
+    ? `<a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" class="about-pro-btn about-pro-btn-primary">View Demo<span class="about-pro-btn-arrow">→</span></a>`
+    : "";
+
+  const posterBtnHtml = project.posterFile
+    ? `<button type="button" class="about-pro-btn about-pro-btn-secondary project-poster-btn" data-poster="${project.posterFile}"><span class="cv-btn-label">Download Poster</span><span class="cv-btn-check">✓</span></button>`
+    : "";
+
   const linksHtml =
-    project.links && project.links.length
-      ? `<div class="project-details-links">${project.links
-          .map(
-            (link) =>
-              `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-link-btn ${
-                link.primary ? "is-primary" : "is-secondary"
-              }"><span class="project-link-icon">${link.icon || "🔗"}</span>${link.label}</a>`
-          )
-          .join("")}</div>`
+    demoBtnHtml || posterBtnHtml
+      ? `<div class="project-details-links">${demoBtnHtml}${posterBtnHtml}</div>`
       : "";
 
   return `
@@ -159,6 +148,7 @@ window.FolderInit.projects = function (windowEl) {
     });
 
     refreshDetailsHint();
+    attachPosterButton();
   }
 
   listItems.forEach((item) => {
@@ -167,6 +157,61 @@ window.FolderInit.projects = function (windowEl) {
       if (e.key === "Enter" || e.key === " ") selectProject(item.dataset.projectId);
     });
   });
+
+  // ---------- Poster download: same confetti + checkmark celebration as CV ----------
+  function spawnProjectConfetti(originEl) {
+    const rect = originEl.getBoundingClientRect();
+    const parentRect = windowEl.getBoundingClientRect();
+    const originX = rect.left - parentRect.left + rect.width / 2;
+    const originY = rect.top - parentRect.top + rect.height / 2;
+
+    const colors = ["#e87a93", "#f3aebb", "#ffffff", "#ea8ea0", "#fbe4e9"];
+    const pieceCount = 16;
+
+    for (let i = 0; i < pieceCount; i++) {
+      const piece = document.createElement("span");
+      piece.className = "cv-confetti-piece";
+
+      const angle = (Math.PI * 2 * i) / pieceCount + Math.random() * 0.5;
+      const distance = 40 + Math.random() * 50;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance - 20;
+
+      piece.style.left = `${originX}px`;
+      piece.style.top = `${originY}px`;
+      piece.style.setProperty("--dx", `${dx}px`);
+      piece.style.setProperty("--dy", `${dy}px`);
+      piece.style.background = colors[i % colors.length];
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      windowEl.appendChild(piece);
+      setTimeout(() => piece.remove(), 900);
+    }
+  }
+
+  function attachPosterButton() {
+    const posterBtn = windowEl.querySelector(".project-poster-btn");
+    if (!posterBtn) return;
+
+    posterBtn.addEventListener("click", () => {
+      const filePath = posterBtn.dataset.poster;
+      if (!filePath) return;
+
+      const link = document.createElement("a");
+      link.href = filePath;
+      link.download = filePath.split("/").pop();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      posterBtn.classList.add("is-downloaded");
+      setTimeout(() => posterBtn.classList.remove("is-downloaded"), 2000);
+
+      spawnProjectConfetti(posterBtn);
+    });
+  }
+
+  attachPosterButton();
 
   // ---------- Vertical scroll hint for the details pane (same as About Me) ----------
   function refreshDetailsHint() {
