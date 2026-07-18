@@ -155,6 +155,91 @@
   .projects-explorer {
     flex-direction: column;
     min-height: auto;
+    height: auto;
+  }
+
+  .projects-list {
+    width: 100%;
+    flex-shrink: 0;
+    max-height: 68px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 8px;
+  }
+
+  .project-list-item {
+    flex-shrink: 0;
+    flex-direction: row;
+    gap: 5px;
+    padding: 5px 9px;
+  }
+
+  .project-list-icon {
+    font-size: 13px;
+  }
+
+  .project-list-text {
+    flex-direction: column;
+  }
+
+  .project-list-name {
+    font-size: 9.5px;
+    max-width: 70px;
+  }
+
+  .project-list-date {
+    display: none; /* تختفي بالقائمة الأفقية الصغيرة، تبين بلوحة التفاصيل بدلها */
+  }
+
+  .projects-details-pane {
+    flex: 1 1 auto;
+    padding: 10px 12px;
+    overflow-y: auto;
+  }
+
+  .project-details-image-wrap {
+    height: 70px;
+    margin-bottom: 8px;
+  }
+
+  .project-details-image-fallback {
+    font-size: 22px;
+  }
+
+  .project-details-title {
+    font-size: 14px;
+    margin: 0 0 3px;
+  }
+
+  .project-details-subtitle {
+    font-size: 10px;
+    margin: 0 0 3px;
+  }
+
+  .project-details-date {
+    font-size: 9px;
+  }
+
+  .project-details-description {
+    font-size: 10px;
+    line-height: 1.5;
+    margin: 8px 0 10px;
+  }
+
+  .project-tag {
+    font-size: 9px;
+    padding: 4px 9px;
+  }
+}container window (max-width: 480px) {
+  .projects-explorer {
+    flex-direction: column;
+    min-height: auto;
   }
 
   .projects-list {
