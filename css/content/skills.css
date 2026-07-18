@@ -133,8 +133,18 @@
   transform-style: preserve-3d;
 }
 
-.skill-file:hover .skill-file-icon {
-  transform: rotateY(8deg) rotateX(-4deg) scale(1.08);
+/* التأثير بيشتغل بس على أجهزة فيها ماوس حقيقي (كمبيوتر) — يمنع
+   "علوق" التأثير بعد اللمس على الموبايل/الآيباد */
+@media (hover: hover) and (pointer: fine) {
+  .skill-file:hover .skill-file-icon {
+    transform: rotateY(8deg) rotateX(-4deg) scale(1.08);
+    box-shadow: 0 6px 18px rgba(232, 122, 147, 0.5), 0 0 0 1px rgba(232, 122, 147, 0.6);
+  }
+}
+
+/* بديل بسيط للمس: نفس التأثير بس لحظة الضغط فقط (زي ضغطة زر) */
+.skill-file:active .skill-file-icon {
+  transform: scale(1.06);
   box-shadow: 0 6px 18px rgba(232, 122, 147, 0.5), 0 0 0 1px rgba(232, 122, 147, 0.6);
 }
 
