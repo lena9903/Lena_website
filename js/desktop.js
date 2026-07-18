@@ -25,6 +25,7 @@ const FOLDERS = [
 const SCREEN_RECT = { xPct: 0.143, yPct: 0.13, wPct: 0.724, hPct: 0.69 };
 const WINDOW_SIZE_OVERRIDES = {
   about: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
+  skills: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
 };
 
 const MIN_WIN_WIDTH = 200;
