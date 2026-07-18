@@ -1,0 +1,119 @@
+/* ============================================
+   Folder Style — Skills (Windows file-explorer look)
+   ============================================ */
+
+.skills-explorer {
+  --rose-500: #e87a93;
+  --rose-400: #ea8ea0;
+  --rose-300: #f3aebb;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skills-group-header {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 16px 10px;
+}
+
+/* ---------- Each skill as a "file" icon ---------- */
+
+.skill-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  border-radius: 6px;
+  cursor: default;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.skill-file:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.skill-file-icon {
+  position: relative;
+  width: 42px;
+  height: 52px;
+  background: linear-gradient(160deg, rgba(232, 122, 147, 0.22), rgba(232, 122, 147, 0.1));
+  border: 1px solid rgba(232, 122, 147, 0.4);
+  border-radius: 3px;
+  clip-path: polygon(0 0, 68% 0, 100% 26%, 100% 100%, 0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* the folded top-right corner of the "file" */
+.skill-file-fold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  background: rgba(255, 255, 255, 0.18);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.skill-file-emoji {
+  font-size: 18px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.skill-file-name {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700; /* bold، متل ما طلبتي */
+  font-size: 10.5px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  word-break: break-word;
+}
+
+/* ---------- Mobile: smaller grid + tighter spacing ---------- */
+
+@container window (max-width: 480px) {
+  .skills-explorer {
+    gap: 14px;
+  }
+
+  .skills-group-header {
+    font-size: 11.5px;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    gap: 12px 6px;
+  }
+
+  .skill-file-icon {
+    width: 34px;
+    height: 42px;
+  }
+
+  .skill-file-emoji {
+    font-size: 15px;
+  }
+
+  .skill-file-name {
+    font-size: 9px;
+  }
+}
