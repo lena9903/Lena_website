@@ -1,0 +1,209 @@
+/* ============================================
+   Folder Style — Projects (Explorer: list + details)
+   ============================================ */
+
+.projects-explorer {
+  --rose-500: #e87a93;
+  --rose-400: #ea8ea0;
+  --rose-300: #f3aebb;
+
+  display: flex;
+  gap: 0;
+  height: 100%;
+  min-height: calc(100% + 32px);
+  margin: -16px -18px;
+}
+
+/* ---------- Left: project list ---------- */
+
+.projects-list {
+  flex-shrink: 0;
+  width: 150px;
+  background: rgba(0, 0, 0, 0.18);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+  padding: 8px 6px;
+}
+
+.project-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.project-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.project-list-item.is-active {
+  background-color: rgba(232, 122, 147, 0.22);
+}
+
+.project-list-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.project-list-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.project-list-name {
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  font-size: 11.5px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-list-date {
+  font-family: "Manrope", sans-serif;
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Right: details pane ---------- */
+
+.projects-details-pane {
+  flex: 1 1 0%;
+  min-width: 0;
+  padding: 18px 20px;
+  overflow-y: auto;
+}
+
+.project-details-image-wrap {
+  width: 100%;
+  height: 130px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.project-details-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-details-image-fallback {
+  font-size: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-details-title {
+  font-family: "Sora", sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
+
+.project-details-subtitle {
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: var(--rose-400);
+  margin: 0 0 4px;
+}
+
+.project-details-date {
+  font-family: "Manrope", sans-serif;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.project-details-description {
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 12px 0 14px;
+}
+
+.project-details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-tag {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 122, 147, 0.4);
+  background: rgba(232, 122, 147, 0.1);
+  color: var(--rose-300);
+}
+
+/* ---------- Mobile: list on top (horizontal scroll), details below ---------- */
+
+@container window (max-width: 480px) {
+  .projects-explorer {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .projects-list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px;
+  }
+
+  .project-list-item {
+    flex-shrink: 0;
+    flex-direction: column;
+    text-align: center;
+    gap: 3px;
+    padding: 6px 10px;
+  }
+
+  .project-list-text {
+    align-items: center;
+  }
+
+  .project-list-name {
+    font-size: 10px;
+    max-width: 80px;
+  }
+
+  .project-list-date {
+    font-size: 8.5px;
+  }
+
+  .projects-details-pane {
+    padding: 14px 14px;
+  }
+
+  .project-details-image-wrap {
+    height: 100px;
+  }
+
+  .project-details-title {
+    font-size: 15px;
+  }
+
+  .project-details-description {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+}
