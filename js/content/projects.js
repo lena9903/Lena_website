@@ -15,7 +15,7 @@ const PROJECTS_DATA = [
     date: "Aug 2025 – Jan 2026",
     badge: "🎓 Graduation Project",
     image:
-      "https://res.cloudinary.com/maz4meys/image/upload/v1784399208/Untitled_design_5_mt7l9d.png",
+      "https://res.cloudinary.com/maz4meys/image/upload/v1784400297/Untitled_design_6_vpbpen.png",
     description:
       "LUMIN is an AI & IoT-powered app that helps households track their electricity usage, cut costs, and make smarter energy decisions. It gives real-time consumption monitoring, predicts upcoming bills with customizable budget alerts, offers AI-driven tips tailored to each user's habits, and forecasts solar energy production up to 2 years ahead (97% accuracy using XGBoost) with investment guidance based on expected returns.",
     tags: [
@@ -94,25 +94,14 @@ function buildProjectDetails(project) {
 
   const linksHtml =
     project.links && project.links.length
-      ? `
-        <div class="project-details-links">
-          ${project.links
-            .map(
-              (link) => `
-              
-                href="${link.url}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="project-link-btn ${link.primary ? "is-primary" : "is-secondary"}"
-              >
-                <span class="project-link-icon">${link.icon || "🔗"}</span>
-                ${link.label}
-              </a>
-            `
-            )
-            .join("")}
-        </div>
-      `
+      ? `<div class="project-details-links">${project.links
+          .map(
+            (link) =>
+              `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-link-btn ${
+                link.primary ? "is-primary" : "is-secondary"
+              }"><span class="project-link-icon">${link.icon || "🔗"}</span>${link.label}</a>`
+          )
+          .join("")}</div>`
       : "";
 
   return `
