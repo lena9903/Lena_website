@@ -66,7 +66,7 @@ image:
   {
     id: "petrolube",
     name: "Customer Complaint Management System",
-    subtitle: "Petrolube Oil Company — IT Internship",
+    subtitle: "Petrolube Oil Company — Internship",
     date: "Jun – Aug 2025",
     image: "assets/icons/projects/petrolube-dashboard.png",
     description:
