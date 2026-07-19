@@ -63,6 +63,19 @@ image:
       "Notey is a Flutter-based note-taking app that lets users create custom categories (folders) and organize notes inside each one. It features user authentication, an editable notes list, and real-time data sync. Built with Dart and powered by Firebase.",
     tags: ["Flutter", "Dart", "Firebase"],
   },
+
+
+    {
+    id: "todo",
+    name: "Daily To-Do App",
+    subtitle: "Simple Daily Task Manager",
+    date: "2024",
+    video: "assets/videos/todo-demo.mp4",
+    poster: "assets/videos/todo-poster.jpg",
+    description:
+      "A simple and clean Flutter app for writing down and managing daily tasks — add, check off, and keep track of what needs to get done, all in one place.",
+    tags: ["Flutter", "Dart"],
+  },
 ];
 
 function buildProjectListItem(project, isActive) {
