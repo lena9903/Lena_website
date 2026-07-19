@@ -95,9 +95,18 @@ function buildProjectDetails(project) {
       ? `<div class="project-details-links">${demoBtnHtml}${posterBtnHtml}</div>`
       : "";
 
-  return `
-    <div class="project-details" data-project-id="${project.id}">
-      <div class="project-details-image-wrap">
+  const mediaHtml = project.video
+    ? `
+        <video
+          src="${project.video}"
+          ${project.poster ? `poster="${project.poster}"` : ""}
+          class="project-details-video"
+          controls
+          playsinline
+          preload="metadata"
+        ></video>
+      `
+    : `
         <img
           src="${project.image}"
           alt="${project.name}"
@@ -105,6 +114,12 @@ function buildProjectDetails(project) {
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         />
         <div class="project-details-image-fallback" style="display:none;">🗂️</div>
+      `;
+
+  return `
+    <div class="project-details" data-project-id="${project.id}">
+      <div class="project-details-image-wrap">
+        ${mediaHtml}
       </div>
 
       ${badgeHtml}
