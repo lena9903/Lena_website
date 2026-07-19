@@ -70,8 +70,8 @@ image:
     date: "Jun – Aug 2025",
     image: "assets/icons/projects/petrolube-dashboard.png",
     description:
-      "Redesigned Petrolube's customer complaint management process, replacing a manual, email- and spreadsheet-based workflow with a centralized, automated tracking portal built on Microsoft Power Platform (Power Apps, Power Automate, and Power BI). The system streamlines the full complaint lifecycle — from submission to investigation, escalation, and closure — with role-based portals, real-time dashboards, and automated SLA tracking and notifications.",
-    tags: ["Power Apps", "Power Automate", "Power BI", "Power Platform"],
+      "Redesigned Petrolube's customer complaint management process, replacing a manual, email- and spreadsheet-based workflow with a centralized, automated tracking portal built on Microsoft Power Platform. The system streamlines the full complaint lifecycle — from submission to investigation, escalation, and closure — with role-based portals, real-time dashboards, and automated SLA tracking and notifications.",
+    tags: ["Power Apps", "Power Pages","Html", "CSS", "JavaScript"],
     letterFile: "assets/documents/petrolube-recommendation-letter.pdf",
   },
 ];
