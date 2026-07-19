@@ -53,14 +53,15 @@ image:
     tags: ["UI/UX Design", "Figma"],
   },
   {
-    id: "golfcar",
-    name: "Golf Car Management System",
-    subtitle: "Advanced Programming Project",
+    id: "notey",
+    name: "Notey",
+    subtitle: "Notes & Folder Organizer App",
     date: "2024",
-    image: "assets/icons/projects/golfcar.png",
+    video: "assets/videos/notey-demo.mp4",
+    poster: "assets/videos/notey-poster.jpg",
     description:
-      "A Java-based platform for golf car reservations at King Abdulaziz University. Utilizes JFrames, Threads, Networking, and Exception Handling for seamless functionality and performance.",
-    tags: ["Java", "Networking", "Multithreading"],
+      "Notey is a Flutter-based note-taking app that lets users create custom categories (folders) and organize notes inside each one. It features user authentication, an editable notes list, and real-time data sync. Built with Dart and powered by Firebase.",
+    tags: ["Flutter", "Dart", "Firebase"],
   },
 ];
 
