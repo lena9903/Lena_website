@@ -31,6 +31,19 @@ image:
     demoUrl: "https://lumin-demo-version.netlify.app/",
     posterFile: "assets/posters/lumin-poster.pdf",
   },
+
+    {
+    id: "petrolube",
+    name: "Customer Complaint Management System",
+    subtitle: "Petrolube Oil Company — Internship",
+    date: "Jun – Aug 2025",
+    image: "assets/icons/projects/petrolube-dashboard.png",
+    description:
+      "Redesigned Petrolube's customer complaint management process, replacing a manual, email- and spreadsheet-based workflow with a centralized, automated tracking portal built on Microsoft Power Platform. The system streamlines the full complaint lifecycle — from submission to investigation, escalation, and closure — with role-based portals, real-time dashboards, and automated SLA tracking and notifications.",
+    tags: ["Power Apps", "Power Pages","Html", "CSS", "JavaScript"],
+    letterFile: "assets/documents/petrolube-recommendation-letter.pdf",
+  },
+  
   {
     id: "loan",
     name: "Loan Approval Prediction",
@@ -63,17 +76,7 @@ image:
       "Notey is a Flutter-based note-taking app that lets users create custom categories (folders) and organize notes inside each one. It features user authentication, an editable notes list, and real-time data sync. Built with Dart and powered by Firebase.",
     tags: ["Flutter", "Dart", "Firebase"],
   },
-  {
-    id: "petrolube",
-    name: "Customer Complaint Management System",
-    subtitle: "Petrolube Oil Company — Internship",
-    date: "Jun – Aug 2025",
-    image: "assets/icons/projects/petrolube-dashboard.png",
-    description:
-      "Redesigned Petrolube's customer complaint management process, replacing a manual, email- and spreadsheet-based workflow with a centralized, automated tracking portal built on Microsoft Power Platform. The system streamlines the full complaint lifecycle — from submission to investigation, escalation, and closure — with role-based portals, real-time dashboards, and automated SLA tracking and notifications.",
-    tags: ["Power Apps", "Power Pages","Html", "CSS", "JavaScript"],
-    letterFile: "assets/documents/petrolube-recommendation-letter.pdf",
-  },
+
 
   {
     id: "todo",
