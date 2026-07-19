@@ -63,18 +63,16 @@ image:
       "Notey is a Flutter-based note-taking app that lets users create custom categories (folders) and organize notes inside each one. It features user authentication, an editable notes list, and real-time data sync. Built with Dart and powered by Firebase.",
     tags: ["Flutter", "Dart", "Firebase"],
   },
-
-
-    {
-    id: "todo",
-    name: "Daily To-Do App",
-    subtitle: "Simple Daily Task Manager",
-    date: "2024",
-    video: "assets/videos/todo-demo.mp4",
-    poster: "assets/videos/todo-poster.jpg",
+  {
+    id: "petrolube",
+    name: "Customer Complaint Management System",
+    subtitle: "Petrolube Oil Company — IT Internship",
+    date: "Jun – Aug 2025",
+    image: "assets/icons/projects/petrolube-dashboard.png",
     description:
-      "A simple and clean Flutter app for writing down and managing daily tasks — add, check off, and keep track of what needs to get done, all in one place.",
-    tags: ["Flutter", "Dart"],
+      "Redesigned Petrolube's customer complaint management process, replacing a manual, email- and spreadsheet-based workflow with a centralized, automated tracking portal built on Microsoft Power Platform (Power Apps, Power Automate, and Power BI). The system streamlines the full complaint lifecycle — from submission to investigation, escalation, and closure — with role-based portals, real-time dashboards, and automated SLA tracking and notifications.",
+    tags: ["Power Apps", "Power Automate", "Power BI", "Power Platform"],
+    letterFile: "assets/documents/petrolube-recommendation-letter.pdf",
   },
 ];
 
@@ -103,9 +101,13 @@ function buildProjectDetails(project) {
     ? `<button type="button" class="about-pro-btn about-pro-btn-secondary project-poster-btn" data-poster="${project.posterFile}"><span class="cv-btn-label">Download Poster</span><span class="cv-btn-check">✓</span></button>`
     : "";
 
+  const letterBtnHtml = project.letterFile
+    ? `<a href="${project.letterFile}" target="_blank" rel="noopener noreferrer" class="about-pro-btn about-pro-btn-primary">View Letter<span class="about-pro-btn-arrow">→</span></a>`
+    : "";
+
   const linksHtml =
-    demoBtnHtml || posterBtnHtml
-      ? `<div class="project-details-links">${demoBtnHtml}${posterBtnHtml}</div>`
+    demoBtnHtml || posterBtnHtml || letterBtnHtml
+      ? `<div class="project-details-links">${demoBtnHtml}${posterBtnHtml}${letterBtnHtml}</div>`
       : "";
 
   const mediaHtml = project.video
