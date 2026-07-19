@@ -74,6 +74,18 @@ image:
     tags: ["Power Apps", "Power Pages","Html", "CSS", "JavaScript"],
     letterFile: "assets/documents/petrolube-recommendation-letter.pdf",
   },
+
+  {
+    id: "todo",
+    name: "Daily To-Do App",
+    subtitle: "Simple Daily Task Manager",
+    date: "2024",
+    video: "assets/videos/todo-demo.mp4",
+    poster: "assets/videos/todo-poster.jpg",
+    description:
+      "A simple and clean Flutter app for writing down and managing daily tasks — add, check off, and keep track of what needs to get done, all in one place.",
+    tags: ["Flutter", "Dart"],
+  },
 ];
 
 function buildProjectListItem(project, isActive) {
