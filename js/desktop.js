@@ -196,7 +196,7 @@ function renderFolderIcons() {
           class="desktop-image-widget-img"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         />
-        <div class="desktop-image-widget-fallback" style="display:none;">📷</div>
+        <div class="desktop-image-widget-fallback" style="display:none;">📷<span>Add photo</span></div>
       `;
       desktopIconsEl.appendChild(imgWidgetEl);
       return;
