@@ -129,8 +129,8 @@ function positionOverlay() {
   const cellHeight = computeCellHeight(scale);
   const gapEstimate = clampPx(2, 8 * scale, 14);
 
-  // مستطيل الصورة بياخذ عرض عمودين، وارتفاع معقول (1.6 ضعف ارتفاع
-  // الخلية العادية) — مو رفيع زيادة ومو طويل زيادة
+  // مستطيل الصورة بياخذ صف كامل بعرض الشاشة (grid-column:1/-1 بالـ CSS)
+  // وارتفاع معقول (1.6 ضعف ارتفاع الخلية العادية) — مو رفيع ومو طويل زيادة
   const IMAGE_WIDGET_HEIGHT_MULTIPLIER = 1.6;
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1; // الكل ما عدا مستطيل الصورة
 
@@ -150,11 +150,6 @@ function positionOverlay() {
 
   const otherRows = Math.ceil(OTHER_COUNT / cols);
   const rows = 1 + otherRows;
-
-  const imageWidgetEl = desktopIconsEl && desktopIconsEl.querySelector(".desktop-image-widget");
-  if (imageWidgetEl) {
-    imageWidgetEl.style.gridColumn = `span ${Math.min(2, cols)}`;
-  }
 
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);

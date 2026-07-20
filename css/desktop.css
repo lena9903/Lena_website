@@ -96,10 +96,10 @@
   white-space: nowrap;
 }
 
-/* ---------- Photo widget — spans 2 columns wide, 1 (taller) row.
-   Width is set dynamically from JS (span capped to however many
-   columns actually exist), so it never overflows on any screen. ---------- */
+/* ---------- Photo widget — spans the full row width (all columns,
+   however many there are) via grid-column: 1 / -1, 1 (taller) row tall. ---------- */
 .desktop-image-widget {
+  grid-column: 1 / -1;
   grid-row: span 1;
   border-radius: 12px;
   overflow: hidden;
