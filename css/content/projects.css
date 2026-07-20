@@ -120,7 +120,7 @@
 .project-details-title {
   font-family: "Sora", sans-serif;
   font-weight: 800;
-  font-size: 32px;
+  font-size: 38px;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: #ffffff;
@@ -420,6 +420,6 @@
 
 @container window (max-width: 480px) {
   .project-details-title {
-    font-size: 26px;
+    font-size: 30px;
   }
 }
