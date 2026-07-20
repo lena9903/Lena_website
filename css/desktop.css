@@ -35,9 +35,9 @@
   left: var(--icon-pad-left, 16px);
   bottom: var(--icon-pad-bottom, 46px);
   display: grid;
-  grid-auto-flow: column; /* يملأ عمود كامل من فوق لتحت، وبعدين ينتقل لعمود جديد يمينه */
-  grid-template-rows: repeat(var(--icon-rows, 6), var(--icon-cell, 84px));
-  grid-auto-columns: var(--icon-cell-width, 84px);
+  grid-auto-flow: row; /* يملأ صف كامل يسار ليمين، وبعدين ينتقل لصف جديد تحت — قراءة طبيعية */
+  grid-template-columns: repeat(var(--icon-cols, 2), var(--icon-cell-width, 84px));
+  grid-auto-rows: var(--icon-cell, 84px);
   gap: var(--icon-gap, 18px);
   max-width: 90%;
 }
@@ -59,6 +59,41 @@
 .folder-icon:hover {
   transform: scale(1.05);
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Decorative clock widget — aesthetic touch, top-right of screen ---------- */
+.desktop-widget {
+  position: absolute;
+  pointer-events: none;
+  font-family: "Sora", sans-serif;
+  user-select: none;
+}
+
+.desktop-widget-clock {
+  top: 5%;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(232, 122, 147, 0.85), rgba(234, 142, 160, 0.75));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(2px);
+}
+
+.desktop-widget-time {
+  font-weight: 800;
+  font-size: clamp(12px, 2.6vw, 20px);
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.desktop-widget-date {
+  font-weight: 500;
+  font-size: clamp(7px, 1.2vw, 10px);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .folder-icon:focus-visible {

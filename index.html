@@ -19,9 +19,8 @@
   <link rel="stylesheet" href="css/desktop.css" />
   <link rel="stylesheet" href="css/content/about.css" />
   <link rel="stylesheet" href="css/content/projects.css" />
-  <link rel="stylesheet" href="css/content/experience.css" />
+  <link rel="stylesheet" href="css/content/achievements.css" />
   <link rel="stylesheet" href="css/content/skills.css" />
-  <link rel="stylesheet" href="css/content/resume.css" />
   <link rel="stylesheet" href="css/content/contact.css" />
 </head>
 <body>
@@ -38,6 +37,10 @@
     <!-- Windows-style interactive desktop — appears once the animation finishes -->
     <div class="desktop-overlay" id="desktop-overlay">
       <div class="desktop-icons" id="desktop-icons"></div>
+      <div class="desktop-widget desktop-widget-clock" id="desktop-clock-widget">
+        <span class="desktop-widget-time" id="desktop-clock-time">--:--</span>
+        <span class="desktop-widget-date" id="desktop-clock-date"></span>
+      </div>
       <div class="desktop-backdrop" id="desktop-backdrop"></div>
       <div class="desktop-windows" id="desktop-windows"></div>
     </div>
@@ -48,9 +51,8 @@
   <!-- Per-folder content (each registers itself into window.FolderContent) -->
   <script src="js/content/about.js"></script>
   <script src="js/content/projects.js"></script>
-  <script src="js/content/experience.js"></script>
+  <script src="js/content/achievements.js"></script>
   <script src="js/content/skills.js"></script>
-  <script src="js/content/resume.js"></script>
   <script src="js/content/contact.js"></script>
 
   <script src="js/desktop.js"></script>

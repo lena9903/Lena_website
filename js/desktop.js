@@ -15,10 +15,9 @@ const FOLDER_ICON_URL =
 
 const FOLDERS = [
   { id: "about", label: "About Me" },
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
-  { id: "resume", label: "Resume" },
+  { id: "achievements", label: "Achievements" },
+  { id: "projects", label: "Projects" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -27,6 +26,7 @@ const WINDOW_SIZE_OVERRIDES = {
   about: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
   skills: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
   projects: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
+  achievements: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
 };
 
 const MIN_WIN_WIDTH = 200;
@@ -138,7 +138,8 @@ function positionOverlay() {
 
   const rows = Math.ceil(FOLDER_COUNT / cols);
 
-overlayEl.style.setProperty("--icon-rows", rows);
+overlayEl.style.setProperty("--icon-cols", cols);
+  overlayEl.style.setProperty("--icon-rows", rows);
   overlayEl.style.setProperty("--icon-size", `${clampPx(28, 58 * scale, 76)}px`);
   overlayEl.style.setProperty("--icon-cell-width", `${clampPx(70, 108 * scale, 130)}px`);
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
@@ -481,10 +482,36 @@ function initDesktop() {
   renderFolderIcons();
   initDesktopScrollWatcher();
   positionOverlay();
+  initClockWidget();
 
   window.addEventListener("resize", handleDesktopResize);
   window.addEventListener("orientationchange", handleDesktopResize);
   window.addEventListener("load", positionOverlay);
+}
+
+/* ---------- Decorative clock widget ---------- */
+function initClockWidget() {
+  const timeEl = document.getElementById("desktop-clock-time");
+  const dateEl = document.getElementById("desktop-clock-date");
+  if (!timeEl || !dateEl) return;
+
+  function updateClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    timeEl.textContent = `${hours}:${minutes} ${ampm}`;
+    dateEl.textContent = now.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000 * 30);
 }
 
 document.addEventListener("DOMContentLoaded", initDesktop);
