@@ -14,13 +14,17 @@ const FOLDER_ICON_URL =
   "https://res.cloudinary.com/maz4meys/image/upload/v1784136778/pastel_yellow_macbook_folder_png-removebg-preview_v14ojh.png";
 
 const DESKTOP_ITEMS = [
+  { type: "image-widget", id: "photo-widget" },
+  { type: "widget", id: "clock-widget" },
   { type: "folder", id: "about", label: "About Me" },
   { type: "folder", id: "skills", label: "Skills" },
-  { type: "widget", id: "clock-widget" },
   { type: "folder", id: "achievements", label: "Achievements" },
   { type: "folder", id: "projects", label: "Projects" },
   { type: "folder", id: "contact", label: "Contact" },
 ];
+
+/* غيّري هذا المسار لصورتك الشخصية لما تجهزيها */
+const IMAGE_WIDGET_SRC = "assets/icons/widget-photo.jpg";
 
 const FOLDERS = DESKTOP_ITEMS.filter((item) => item.type === "folder");
 
@@ -109,8 +113,6 @@ function positionOverlay() {
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
   const scale = Math.min(scaleW, scaleH);
 
-  const ITEM_COUNT = DESKTOP_ITEMS.length;
-
   function computeCellHeight(s) {
     const iconSize = clampPx(28, 58 * s, 76);
     const fontSize = clampPx(10, 13 * s, 16);
@@ -127,19 +129,32 @@ function positionOverlay() {
   const cellHeight = computeCellHeight(scale);
   const gapEstimate = clampPx(2, 8 * scale, 14);
 
-  // نحدد أقل عدد أعمدة كافي حتى كل الفولدرات تتسع عمودياً بنفس الحجم
-  // الثابت، بدل ما نصغر الحجم نفسه
+  // مستطيل الصورة بياخذ عرض عمودين، وارتفاع معقول (1.6 ضعف ارتفاع
+  // الخلية العادية) — مو رفيع زيادة ومو طويل زيادة
+  const IMAGE_WIDGET_HEIGHT_MULTIPLIER = 1.6;
+  const OTHER_COUNT = DESKTOP_ITEMS.length - 1; // الكل ما عدا مستطيل الصورة
+
   let cols = 1;
   for (let tryCols = 1; tryCols <= 3; tryCols++) {
-    const rows = Math.ceil(ITEM_COUNT / tryCols);
-    const neededHeight = rows * cellHeight + (rows - 1) * gapEstimate;
+    const otherRows = Math.ceil(OTHER_COUNT / tryCols);
+    const totalRows = 1 + otherRows;
+    const neededHeight =
+      cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER +
+      otherRows * cellHeight +
+      (totalRows - 1) * gapEstimate;
     if (neededHeight <= availableHeight || tryCols === 3) {
       cols = tryCols;
       break;
     }
   }
 
-  const rows = Math.ceil(ITEM_COUNT / cols);
+  const otherRows = Math.ceil(OTHER_COUNT / cols);
+  const rows = 1 + otherRows;
+
+  const imageWidgetEl = desktopIconsEl && desktopIconsEl.querySelector(".desktop-image-widget");
+  if (imageWidgetEl) {
+    imageWidgetEl.style.gridColumn = `span ${Math.min(2, cols)}`;
+  }
 
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
@@ -171,6 +186,22 @@ function getFolderContent(id) {
 
 function renderFolderIcons() {
   DESKTOP_ITEMS.forEach((item) => {
+    if (item.type === "image-widget") {
+      const imgWidgetEl = document.createElement("div");
+      imgWidgetEl.className = "desktop-image-widget";
+      imgWidgetEl.innerHTML = `
+        <img
+          src="${IMAGE_WIDGET_SRC}"
+          alt="Lena"
+          class="desktop-image-widget-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div class="desktop-image-widget-fallback" style="display:none;">📷</div>
+      `;
+      desktopIconsEl.appendChild(imgWidgetEl);
+      return;
+    }
+
     if (item.type === "widget") {
       const widgetEl = document.createElement("div");
       widgetEl.className = "folder-icon is-widget";
