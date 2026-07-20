@@ -61,39 +61,38 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ---------- Decorative clock widget — aesthetic touch, top-right of screen ---------- */
-.desktop-widget {
-  position: absolute;
-  pointer-events: none;
+/* ---------- Decorative clock widget — lives INSIDE the icon grid as one
+   cell, exactly like a folder, so it's naturally surrounded by folders
+   and scales identically on every screen size ---------- */
+.folder-icon.is-widget {
+  cursor: default;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(232, 122, 147, 0.92), rgba(234, 142, 160, 0.85));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.folder-icon.is-widget:hover {
+  transform: none;
+  background: linear-gradient(135deg, rgba(232, 122, 147, 0.92), rgba(234, 142, 160, 0.85));
+}
+
+.widget-time {
   font-family: "Sora", sans-serif;
-  user-select: none;
-}
-
-.desktop-widget-clock {
-  top: 5%;
-  right: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 10px 18px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(232, 122, 147, 0.85), rgba(234, 142, 160, 0.75));
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(2px);
-}
-
-.desktop-widget-time {
   font-weight: 800;
-  font-size: clamp(12px, 2.6vw, 20px);
   color: #ffffff;
-  letter-spacing: 0.02em;
+  font-size: calc(var(--icon-font, 12px) * 1.4);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
-.desktop-widget-date {
+.widget-date {
+  font-family: "Manrope", sans-serif;
   font-weight: 500;
-  font-size: clamp(7px, 1.2vw, 10px);
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: calc(var(--icon-font, 12px) * 0.78);
+  white-space: nowrap;
 }
 
 .folder-icon:focus-visible {

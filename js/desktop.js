@@ -13,13 +13,16 @@
 const FOLDER_ICON_URL =
   "https://res.cloudinary.com/maz4meys/image/upload/v1784136778/pastel_yellow_macbook_folder_png-removebg-preview_v14ojh.png";
 
-const FOLDERS = [
-  { id: "about", label: "About Me" },
-  { id: "skills", label: "Skills" },
-  { id: "achievements", label: "Achievements" },
-  { id: "projects", label: "Projects" },
-  { id: "contact", label: "Contact" },
+const DESKTOP_ITEMS = [
+  { type: "folder", id: "about", label: "About Me" },
+  { type: "folder", id: "skills", label: "Skills" },
+  { type: "widget", id: "clock-widget" },
+  { type: "folder", id: "achievements", label: "Achievements" },
+  { type: "folder", id: "projects", label: "Projects" },
+  { type: "folder", id: "contact", label: "Contact" },
 ];
+
+const FOLDERS = DESKTOP_ITEMS.filter((item) => item.type === "folder");
 
 const SCREEN_RECT = { xPct: 0.143, yPct: 0.13, wPct: 0.724, hPct: 0.69 };
 const WINDOW_SIZE_OVERRIDES = {
@@ -106,7 +109,7 @@ function positionOverlay() {
   const scaleH = clampPx(0.5, screenHeight / 560, 1.6);
   const scale = Math.min(scaleW, scaleH);
 
-  const FOLDER_COUNT = FOLDERS.length;
+  const ITEM_COUNT = DESKTOP_ITEMS.length;
 
   function computeCellHeight(s) {
     const iconSize = clampPx(28, 58 * s, 76);
@@ -128,7 +131,7 @@ function positionOverlay() {
   // الثابت، بدل ما نصغر الحجم نفسه
   let cols = 1;
   for (let tryCols = 1; tryCols <= 3; tryCols++) {
-    const rows = Math.ceil(FOLDER_COUNT / tryCols);
+    const rows = Math.ceil(ITEM_COUNT / tryCols);
     const neededHeight = rows * cellHeight + (rows - 1) * gapEstimate;
     if (neededHeight <= availableHeight || tryCols === 3) {
       cols = tryCols;
@@ -136,7 +139,7 @@ function positionOverlay() {
     }
   }
 
-  const rows = Math.ceil(FOLDER_COUNT / cols);
+  const rows = Math.ceil(ITEM_COUNT / cols);
 
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
@@ -167,7 +170,20 @@ function getFolderContent(id) {
 /* ---------- FolderIcon ---------- */
 
 function renderFolderIcons() {
-  FOLDERS.forEach((folder) => {
+  DESKTOP_ITEMS.forEach((item) => {
+    if (item.type === "widget") {
+      const widgetEl = document.createElement("div");
+      widgetEl.className = "folder-icon is-widget";
+      widgetEl.tabIndex = -1;
+      widgetEl.innerHTML = `
+        <span class="widget-time" id="desktop-clock-time">--:--</span>
+        <span class="widget-date" id="desktop-clock-date"></span>
+      `;
+      desktopIconsEl.appendChild(widgetEl);
+      return;
+    }
+
+    const folder = item;
     const iconEl = document.createElement("div");
     iconEl.className = "folder-icon";
     iconEl.dataset.folderId = folder.id;
