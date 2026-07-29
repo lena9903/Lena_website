@@ -134,7 +134,7 @@ function positionOverlay() {
   // بالجوال بالوضع الرأسي) ضيقة، حتى ما تختفي فولدرات من الشاشة
   const availableHeightRatio = availableHeight / (cellHeight * 7); // تقدير تقريبي لمدى ضيق المساحة
   const IMAGE_WIDGET_HEIGHT_MULTIPLIER = availableHeightRatio < 1 ? 1.15 : 1.5;
-  const isNarrowViewport = window.matchMedia("(max-width: 480px)").matches;
+  const isNarrowViewport = window.matchMedia("(max-width: 600px), (max-height: 500px)").matches;
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1 - (isNarrowViewport ? 1 : 0); // الكل ما عدا مستطيل الصورة (وما عدا الساعة لو مخفية بالجوال)
 
   let cols = 1;
