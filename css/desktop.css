@@ -105,9 +105,9 @@
 
 /* على الجوال، نشيل ويدجت الساعة ونخلي مستطيل الصورة بس — مساحة
    أوسع وأنضف للفولدرات */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .folder-icon.is-widget {
-    display: none;
+    display: none !important;
   }
 }
 
