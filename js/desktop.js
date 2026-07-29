@@ -114,35 +114,37 @@ function positionOverlay() {
   const scale = Math.min(scaleW, scaleH);
 
   function computeCellHeight(s) {
-    const iconSize = clampPx(28, 58 * s, 76);
-    const fontSize = clampPx(10, 13 * s, 16);
+    const iconSize = clampPx(22, 58 * s, 76);
+    const fontSize = clampPx(9, 13 * s, 16);
     const labelTwoLines = fontSize * 1.25 * 2;
-    const cellPaddingVertical = 12;
-    const labelMarginTop = 5;
+    const cellPaddingVertical = 8;
+    const labelMarginTop = 4;
     return cellPaddingVertical + iconSize + labelMarginTop + labelTwoLines;
   }
 
-  const padTopEstimate = clampPx(6, 12 * scale, 16);
-  const padBottomEstimate = clampPx(30, 46 * scale, 60);
+  const padTopEstimate = clampPx(4, 12 * scale, 16);
+  const padBottomEstimate = clampPx(20, 46 * scale, 60);
   const availableHeight = screenHeight - padTopEstimate - padBottomEstimate;
 
   const cellHeight = computeCellHeight(scale);
   const gapEstimate = clampPx(2, 8 * scale, 14);
 
   // مستطيل الصورة بياخذ صف كامل بعرض الشاشة (grid-column:1/-1 بالـ CSS)
-  // وارتفاع معقول (1.6 ضعف ارتفاع الخلية العادية) — مو رفيع ومو طويل زيادة
-  const IMAGE_WIDGET_HEIGHT_MULTIPLIER = 1.6;
+  // وارتفاع معقول — بنصغره أكثر لو المساحة العمودية المتوفرة (خصوصاً
+  // بالجوال بالوضع الرأسي) ضيقة، حتى ما تختفي فولدرات من الشاشة
+  const availableHeightRatio = availableHeight / (cellHeight * 7); // تقدير تقريبي لمدى ضيق المساحة
+  const IMAGE_WIDGET_HEIGHT_MULTIPLIER = availableHeightRatio < 1 ? 1.15 : 1.5;
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1; // الكل ما عدا مستطيل الصورة
 
   let cols = 1;
-  for (let tryCols = 1; tryCols <= 3; tryCols++) {
+  for (let tryCols = 1; tryCols <= 4; tryCols++) {
     const otherRows = Math.ceil(OTHER_COUNT / tryCols);
     const totalRows = 1 + otherRows;
     const neededHeight =
       cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER +
       otherRows * cellHeight +
       (totalRows - 1) * gapEstimate;
-    if (neededHeight <= availableHeight || tryCols === 3) {
+    if (neededHeight <= availableHeight || tryCols === 4) {
       cols = tryCols;
       break;
     }
@@ -153,6 +155,7 @@ function positionOverlay() {
 
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
+  overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
   overlayEl.style.setProperty("--icon-size", `${clampPx(28, 58 * scale, 76)}px`);
   overlayEl.style.setProperty("--icon-cell-width", `${clampPx(70, 108 * scale, 130)}px`);
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);

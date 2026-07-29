@@ -37,10 +37,17 @@
   display: grid;
   grid-auto-flow: row; /* يملأ صف كامل يسار ليمين، وبعدين ينتقل لصف جديد تحت — قراءة طبيعية */
   grid-template-columns: repeat(var(--icon-cols, 2), var(--icon-cell-width, 84px));
-  grid-template-rows: calc(var(--icon-cell, 84px) * 1.6); /* أول صف (مستطيل الصورة) أطول */
+  grid-template-rows: var(--image-widget-height, calc(var(--icon-cell, 84px) * 1.5)); /* أول صف (مستطيل الصورة) — يتصغّر تلقائياً لو المساحة ضيقة */
   grid-auto-rows: var(--icon-cell, 84px); /* باقي الصفوف (الفولدرات) بالحجم العادي */
   gap: var(--icon-gap, 18px);
   max-width: 90%;
+  overflow-y: auto; /* شبكة أمان: لو المحتوى زاد عن المساحة المتوفرة بأي جهاز، يصير قابل للسكرول بدل ما يختفي فولدر بالكامل */
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+}
+
+.desktop-icons::-webkit-scrollbar {
+  display: none; /* Chrome/Safari — سكرول شغال بس مخفي بصرياً حتى يضل شكل الديسكتوب نضيف */
 }
 .folder-icon {
   display: flex;
