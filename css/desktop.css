@@ -102,6 +102,7 @@
   font-size: calc(var(--icon-font, 12px) * 0.78);
   white-space: nowrap;
 }
+
 /* على الجوال، نشيل ويدجت الساعة ونخلي مستطيل الصورة بس — مساحة
    أوسع وأنضف للفولدرات */
 @media (max-width: 480px) {
