@@ -102,6 +102,13 @@
   font-size: calc(var(--icon-font, 12px) * 0.78);
   white-space: nowrap;
 }
+/* على الجوال، نشيل ويدجت الساعة ونخلي مستطيل الصورة بس — مساحة
+   أوسع وأنضف للفولدرات */
+@media (max-width: 480px) {
+  .folder-icon.is-widget {
+    display: none;
+  }
+}
 
 /* ---------- Photo widget — spans the full row width (all columns,
    however many there are) via grid-column: 1 / -1, 1 (taller) row tall. ---------- */
