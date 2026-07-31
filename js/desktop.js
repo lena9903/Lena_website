@@ -114,8 +114,8 @@ function positionOverlay() {
   const scale = Math.min(scaleW, scaleH);
 
   function computeCellHeight(s) {
-    const iconSize = clampPx(22, 58 * s, 76);
-    const fontSize = clampPx(9, 13 * s, 16);
+    const iconSize = clampPx(32, 58 * s, 76);
+    const fontSize = clampPx(11, 13 * s, 16);
     const labelTwoLines = fontSize * 1.25 * 2;
     const cellPaddingVertical = 8;
     const labelMarginTop = 4;
@@ -138,14 +138,14 @@ function positionOverlay() {
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1 - (isNarrowViewport ? 1 : 0); // الكل ما عدا مستطيل الصورة (وما عدا الساعة لو مخفية بالجوال)
 
   let cols = 1;
-  for (let tryCols = 1; tryCols <= 6; tryCols++) {
+  for (let tryCols = 1; tryCols <= 3; tryCols++) {
     const otherRows = Math.ceil(OTHER_COUNT / tryCols);
     const totalRows = 1 + otherRows;
     const neededHeight =
       cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER +
       otherRows * cellHeight +
       (totalRows - 1) * gapEstimate;
-    if (neededHeight <= availableHeight || tryCols === 6) {
+    if (neededHeight <= availableHeight || tryCols === 3) {
       cols = tryCols;
       break;
     }
@@ -157,13 +157,13 @@ function positionOverlay() {
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
   overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(28, 58 * scale, 76)}px`);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(32, 58 * scale, 76)}px`);
 
   const maxWidthAvailable = screenWidth * 0.9; // نفس نسبة max-width بالـ CSS
   const perColumnWidth = (maxWidthAvailable - (cols - 1) * gapEstimate) / cols;
   overlayEl.style.setProperty(
     "--icon-cell-width",
-    `${clampPx(50, Math.min(108 * scale, perColumnWidth), 130)}px`
+    `${clampPx(64, Math.min(108 * scale, perColumnWidth), 130)}px`
   );
 
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
@@ -171,7 +171,7 @@ overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-pad-top", `${padTopEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-bottom", `${padBottomEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
-  overlayEl.style.setProperty("--icon-font", `${clampPx(10, 13 * scale, 16)}px`);
+  overlayEl.style.setProperty("--icon-font", `${clampPx(11, 13 * scale, 16)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
   overlayEl.style.setProperty("--title-font", `${clampPx(9, 12 * scale, 13)}px`);
   overlayEl.style.setProperty("--content-font", `${clampPx(9, 12 * scale, 14)}px`);
