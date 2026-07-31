@@ -116,11 +116,11 @@ function positionOverlay() {
   const isTightSpace = scaleH <= 0.55; // مؤشر إذا المساحة العمودية ضيقة جداً (جوال قصير)
 
   function computeCellHeight(s) {
-    const iconSize = clampPx(isTightSpace ? 24 : 32, 58 * s, 76);
-    const fontSize = clampPx(isTightSpace ? 9 : 11, 13 * s, 16);
+    const iconSize = clampPx(isTightSpace ? 22 : 32, 58 * s, 76);
+    const fontSize = clampPx(isTightSpace ? 8 : 11, 13 * s, 16);
     const labelTwoLines = fontSize * 1.25 * 2;
-    const cellPaddingVertical = 8;
-    const labelMarginTop = 4;
+    const cellPaddingVertical = isTightSpace ? 5 : 8;
+    const labelMarginTop = isTightSpace ? 2 : 4;
     return cellPaddingVertical + iconSize + labelMarginTop + labelTwoLines;
   }
 
@@ -135,19 +135,19 @@ function positionOverlay() {
   // وارتفاع معقول — بنصغره أكثر لو المساحة العمودية المتوفرة (خصوصاً
   // بالجوال بالوضع الرأسي) ضيقة، حتى ما تختفي فولدرات من الشاشة
   const availableHeightRatio = availableHeight / (cellHeight * 7); // تقدير تقريبي لمدى ضيق المساحة
-  const IMAGE_WIDGET_HEIGHT_MULTIPLIER = availableHeightRatio < 1 ? 1.15 : 1.5;
+  const IMAGE_WIDGET_HEIGHT_MULTIPLIER = isTightSpace ? 1 : availableHeightRatio < 1 ? 1.15 : 1.5;
   const isNarrowViewport = window.matchMedia("(max-width: 600px), (max-height: 500px)").matches;
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1 - (isNarrowViewport ? 1 : 0); // الكل ما عدا مستطيل الصورة (وما عدا الساعة لو مخفية بالجوال)
 
   let cols = 1;
-  for (let tryCols = 1; tryCols <= 4; tryCols++) {
+  for (let tryCols = 1; tryCols <= 6; tryCols++) {
     const otherRows = Math.ceil(OTHER_COUNT / tryCols);
     const totalRows = 1 + otherRows;
     const neededHeight =
       cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER +
       otherRows * cellHeight +
       (totalRows - 1) * gapEstimate;
-    if (neededHeight <= availableHeight || tryCols === 4) {
+    if (neededHeight <= availableHeight || tryCols === 6) {
       cols = tryCols;
       break;
     }
@@ -159,13 +159,13 @@ function positionOverlay() {
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
   overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 24 : 32, 58 * scale, 76)}px`);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 22 : 32, 58 * scale, 76)}px`);
 
   const maxWidthAvailable = screenWidth * 0.9; // نفس نسبة max-width بالـ CSS
   const perColumnWidth = (maxWidthAvailable - (cols - 1) * gapEstimate) / cols;
   overlayEl.style.setProperty(
     "--icon-cell-width",
-    `${clampPx(isTightSpace ? 54 : 64, Math.min(108 * scale, perColumnWidth), 130)}px`
+    `${clampPx(isTightSpace ? 44 : 64, Math.min(108 * scale, perColumnWidth), 130)}px`
   );
 
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
@@ -173,7 +173,7 @@ overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-pad-top", `${padTopEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-bottom", `${padBottomEstimate}px`);
   overlayEl.style.setProperty("--icon-pad-left", `${clampPx(10, 18 * scale, 26)}px`);
-  overlayEl.style.setProperty("--icon-font", `${clampPx(isTightSpace ? 9 : 11, 13 * scale, 16)}px`);
+  overlayEl.style.setProperty("--icon-font", `${clampPx(isTightSpace ? 8 : 11, 13 * scale, 16)}px`);
   overlayEl.style.setProperty("--header-h", `${clampPx(18, 28 * scale, 34)}px`);
   overlayEl.style.setProperty("--title-font", `${clampPx(9, 12 * scale, 13)}px`);
   overlayEl.style.setProperty("--content-font", `${clampPx(9, 12 * scale, 14)}px`);
