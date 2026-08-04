@@ -157,7 +157,7 @@ overlayEl.style.setProperty("--icon-cols", cols);
   // بالآيباد/اللابتوب (لما يكفي المجال لـ3 أعمدة أو أكتر)، نغيّر ترتيب
   // الفولدرات حتى Skills وContact ينزلوا للصف التاني — الجوال يضل
   // بترتيبه الأصلي بدون أي تغيير
-  const useWideOrder = !isNarrowViewport;
+const useWideOrder = screenWidth > 400;
   const wideFolderOrder = { about: 1, achievements: 2, projects: 3, skills: 4, contact: 5 };
 
   desktopIconsEl.querySelectorAll(".folder-icon:not(.is-widget)").forEach((el) => {
