@@ -146,6 +146,12 @@ function positionOverlay() {
     }
   }
 
+  // بالآيباد/اللابتوب في مساحة أفقية كافية دايماً، فما في داعي
+  // نوقف عند عمودين بس لأنهم كفوا ارتفاعياً — نخلي 3 أعمدة كحد أدنى
+  if (screenWidth > 400 && cols < 3) {
+    cols = 3;
+  }
+
   const otherRows = Math.ceil(OTHER_COUNT / cols);
   const rows = 1 + otherRows;
 
