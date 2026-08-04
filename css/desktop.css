@@ -168,10 +168,9 @@
   pointer-events: none;
 }
 
-.folder-icon .icon-box img {
+.folder-icon .icon-box svg {
   width: 100%;
   height: 100%;
-  object-fit: contain;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
 }
 
@@ -206,7 +205,7 @@
   display: none; /* البلر تم إلغاؤه بناءً على الطلب */
 }
 
-/* ---------- Windows 11-style application window ---------- */
+/* ---------- macOS-style application window ---------- */
 
 .desktop-window {
   position: absolute;
@@ -243,11 +242,12 @@
 }
 
 .window-header {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   height: var(--header-h, 30px);
-  padding: 0 6px 0 12px;
+  padding: 0 60px;
   background: rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   cursor: grab;
@@ -268,37 +268,55 @@
   text-overflow: ellipsis;
 }
 
+/* Traffic-light buttons — red/yellow/green circles on the left, mac style */
 .window-controls {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 8px;
 }
 
 .window-controls button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+}
+
+.btn-close { background: #ff5f57; }
+.btn-min { background: #febc2e; }
+.btn-max { background: #28c840; }
+
+/* الرموز (×, −, +) تبين بس لما الماوس يمر فوق مجموعة الأزرار، تماماً متل ماك */
+.window-controls button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 3px;
-  color: #eaeaea;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.1s ease;
 }
 
-.window-controls button svg {
-  width: 10px;
-  height: 10px;
+.window-controls:hover button::before {
+  opacity: 1;
 }
 
-.window-controls button:hover {
-  background-color: rgba(255, 255, 255, 0.12);
-}
-
-.window-controls .btn-close:hover {
-  background-color: #e81123;
-}
+.btn-close::before { content: "×"; }
+.btn-min::before { content: "−"; }
+.btn-max::before { content: "+"; }
 
 .window-content {
   flex: 1;

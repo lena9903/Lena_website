@@ -10,8 +10,23 @@
 
 /* ---------- Config ---------- */
 
-const FOLDER_ICON_URL =
-  "https://res.cloudinary.com/maz4meys/image/upload/v1784136778/pastel_yellow_macbook_folder_png-removebg-preview_v14ojh.png";
+/* أيقونة فولدر بستايل ماك (Finder) — SVG مرسوم بالكود، بدون رابط خارجي */
+const FOLDER_ICON_SVG = `
+  <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="macFolderBack" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#6fb1ff"/>
+        <stop offset="100%" stop-color="#3d8bf0"/>
+      </linearGradient>
+      <linearGradient id="macFolderFront" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#bfe0ff"/>
+        <stop offset="100%" stop-color="#8fc6ff"/>
+      </linearGradient>
+    </defs>
+    <path d="M4 16c0-3.3 2.7-6 6-6h24l8 8h48c3.3 0 6 2.7 6 6v6H4V16z" fill="url(#macFolderBack)"/>
+    <path d="M4 24h92c3.3 0 6 2.7 6 6v34c0 3.3-2.7 6-6 6H10c-3.3 0-6-2.7-6-6V24z" fill="url(#macFolderFront)"/>
+  </svg>
+`;
 
 const DESKTOP_ITEMS = [
   { type: "image-widget", id: "photo-widget" },
@@ -38,13 +53,6 @@ const WINDOW_SIZE_OVERRIDES = {
 
 const MIN_WIN_WIDTH = 200;
 const MIN_WIN_HEIGHT = 150;
-
-const ICONS = {
-  minimize: `<svg viewBox="0 0 10 10"><rect x="0" y="4.5" width="10" height="1" fill="currentColor"/></svg>`,
-  maximize: `<svg viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1"/></svg>`,
-  restore: `<svg viewBox="0 0 10 10"><rect x="2.5" y="0.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1"/><rect x="0.5" y="2.5" width="7" height="7" fill="rgba(30,30,34,1)" stroke="currentColor" stroke-width="1"/></svg>`,
-  close: `<svg viewBox="0 0 10 10"><line x1="0.5" y1="0.5" x2="9.5" y2="9.5" stroke="currentColor" stroke-width="1"/><line x1="9.5" y1="0.5" x2="0.5" y2="9.5" stroke="currentColor" stroke-width="1"/></svg>`,
-};
 
 /* ---------- DOM refs (assigned in initDesktop) ---------- */
 
@@ -229,9 +237,7 @@ function renderFolderIcons() {
     iconEl.tabIndex = 0;
 
     iconEl.innerHTML = `
-      <div class="icon-box">
-        <img src="${FOLDER_ICON_URL}" alt="${folder.label} folder" draggable="false" />
-      </div>
+      <div class="icon-box">${FOLDER_ICON_SVG}</div>
       <span class="folder-label">${folder.label}</span>
     `;
 
@@ -272,12 +278,12 @@ function createWindow(folder) {
 
   el.innerHTML = `
     <div class="window-header" data-drag-handle>
-      <span class="window-title">${folder.label}</span>
       <div class="window-controls">
-        <button class="btn-min" title="Minimize" aria-label="Minimize">${ICONS.minimize}</button>
-        <button class="btn-max" title="Maximize" aria-label="Maximize">${ICONS.maximize}</button>
-        <button class="btn-close" title="Close" aria-label="Close">${ICONS.close}</button>
+        <button class="btn-close" title="Close" aria-label="Close"></button>
+        <button class="btn-min" title="Minimize" aria-label="Minimize"></button>
+        <button class="btn-max" title="Maximize" aria-label="Maximize"></button>
       </div>
+      <span class="window-title">${folder.label}</span>
     </div>
     <div class="window-content">${getFolderContent(folder.id)}</div>
     <div class="resize-handle rh-n" data-dir="n"></div>
@@ -476,7 +482,6 @@ function toggleMaximize(id) {
     el.style.top = el.dataset.prevTop;
     el.style.width = el.dataset.prevWidth;
     el.style.height = el.dataset.prevHeight;
-    btnMax.innerHTML = ICONS.maximize;
     btnMax.title = "Maximize";
   } else {
     el.dataset.prevLeft = el.style.left;
@@ -488,7 +493,6 @@ function toggleMaximize(id) {
     el.style.top = "0px";
     el.style.width = "100%";
     el.style.height = "100%";
-    btnMax.innerHTML = ICONS.restore;
     btnMax.title = "Restore";
   }
 }
