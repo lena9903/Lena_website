@@ -109,7 +109,7 @@ function positionOverlay() {
   const isTightSpace = scaleH <= 0.55; // مؤشر إذا المساحة العمودية ضيقة جداً (جوال قصير)
 
   function computeCellHeight(s) {
-    const iconSize = clampPx(isTightSpace ? 22 : 32, 58 * s, 76);
+    const iconSize = clampPx(isTightSpace ? 26 : 40, 68 * s, 88);
     const fontSize = clampPx(isTightSpace ? 8 : 11, 13 * s, 16);
     const labelTwoLines = fontSize * 1.25 * 2;
     const cellPaddingVertical = isTightSpace ? 5 : 8;
@@ -152,13 +152,13 @@ function positionOverlay() {
 overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--icon-rows", rows);
   overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
-  overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 22 : 32, 58 * scale, 76)}px`);
+  overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 26 : 40, 68 * scale, 88)}px`);
 
   const maxWidthAvailable = screenWidth * 0.9; // نفس نسبة max-width بالـ CSS
   const perColumnWidth = (maxWidthAvailable - (cols - 1) * gapEstimate) / cols;
   overlayEl.style.setProperty(
     "--icon-cell-width",
-    `${clampPx(isTightSpace ? 44 : 64, Math.min(108 * scale, perColumnWidth), 130)}px`
+    `${clampPx(isTightSpace ? 48 : 70, Math.min(120 * scale, perColumnWidth), 142)}px`
   );
 
   overlayEl.style.setProperty("--icon-cell", `${cellHeight}px`);
