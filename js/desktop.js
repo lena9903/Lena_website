@@ -10,23 +10,8 @@
 
 /* ---------- Config ---------- */
 
-/* أيقونة فولدر بستايل ماك (Finder) — SVG مرسوم بالكود، بدون رابط خارجي */
-const FOLDER_ICON_SVG = `
-  <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="macFolderBack" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#6fb1ff"/>
-        <stop offset="100%" stop-color="#3d8bf0"/>
-      </linearGradient>
-      <linearGradient id="macFolderFront" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#bfe0ff"/>
-        <stop offset="100%" stop-color="#8fc6ff"/>
-      </linearGradient>
-    </defs>
-    <path d="M4 16c0-3.3 2.7-6 6-6h24l8 8h48c3.3 0 6 2.7 6 6v6H4V16z" fill="url(#macFolderBack)"/>
-    <path d="M4 24h92c3.3 0 6 2.7 6 6v34c0 3.3-2.7 6-6 6H10c-3.3 0-6-2.7-6-6V24z" fill="url(#macFolderFront)"/>
-  </svg>
-`;
+/* أيقونة فولدر ماك — صورة حقيقية رفعتها لينا */
+const FOLDER_ICON_URL = "assets/icons/folder-icon-macos.png";
 
 const DESKTOP_ITEMS = [
   { type: "image-widget", id: "photo-widget" },
@@ -237,7 +222,9 @@ function renderFolderIcons() {
     iconEl.tabIndex = 0;
 
     iconEl.innerHTML = `
-      <div class="icon-box">${FOLDER_ICON_SVG}</div>
+      <div class="icon-box">
+        <img src="${FOLDER_ICON_URL}" alt="${folder.label} folder" draggable="false" />
+      </div>
       <span class="folder-label">${folder.label}</span>
     `;
 
