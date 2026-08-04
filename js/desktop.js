@@ -154,6 +154,19 @@ overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
   overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 26 : 40, 68 * scale, 88)}px`);
 
+  // بالآيباد/اللابتوب (لما يكفي المجال لـ3 أعمدة أو أكتر)، نغيّر ترتيب
+  // الفولدرات حتى Skills وContact ينزلوا للصف التاني — الجوال يضل
+  // بترتيبه الأصلي بدون أي تغيير
+  const useWideOrder = cols >= 3;
+  const wideFolderOrder = { about: 1, achievements: 2, projects: 3, skills: 4, contact: 5 };
+
+  desktopIconsEl.querySelectorAll(".folder-icon:not(.is-widget)").forEach((el) => {
+    const id = el.dataset.folderId;
+    el.style.order = useWideOrder && wideFolderOrder[id] !== undefined ? wideFolderOrder[id] : "";
+  });
+  const clockWidgetEl = desktopIconsEl.querySelector(".folder-icon.is-widget");
+  if (clockWidgetEl) clockWidgetEl.style.order = useWideOrder ? 0 : "";
+
   const maxWidthAvailable = screenWidth * 0.9; // نفس نسبة max-width بالـ CSS
   const perColumnWidth = (maxWidthAvailable - (cols - 1) * gapEstimate) / cols;
   overlayEl.style.setProperty(
