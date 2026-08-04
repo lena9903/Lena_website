@@ -133,14 +133,15 @@ function positionOverlay() {
   const OTHER_COUNT = DESKTOP_ITEMS.length - 1 - (isNarrowViewport ? 1 : 0); // الكل ما عدا مستطيل الصورة (وما عدا الساعة لو مخفية بالجوال)
 
   let cols = 1;
-  for (let tryCols = 1; tryCols <= 6; tryCols++) {
+  const MAX_COLS = 2; // ثابت على عمودين بكل الأحجام — جوال وآيباد ولابتوب
+  for (let tryCols = 1; tryCols <= MAX_COLS; tryCols++) {
     const otherRows = Math.ceil(OTHER_COUNT / tryCols);
     const totalRows = 1 + otherRows;
     const neededHeight =
       cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER +
       otherRows * cellHeight +
       (totalRows - 1) * gapEstimate;
-    if (neededHeight <= availableHeight || tryCols === 6) {
+    if (neededHeight <= availableHeight || tryCols === MAX_COLS) {
       cols = tryCols;
       break;
     }
@@ -154,10 +155,9 @@ overlayEl.style.setProperty("--icon-cols", cols);
   overlayEl.style.setProperty("--image-widget-height", `${cellHeight * IMAGE_WIDGET_HEIGHT_MULTIPLIER}px`);
   overlayEl.style.setProperty("--icon-size", `${clampPx(isTightSpace ? 26 : 40, 68 * scale, 88)}px`);
 
-  // بالآيباد/اللابتوب (لما يكفي المجال لـ3 أعمدة أو أكتر)، نغيّر ترتيب
-  // الفولدرات حتى Skills وContact ينزلوا للصف التاني — الجوال يضل
-  // بترتيبه الأصلي بدون أي تغيير
-const useWideOrder = screenWidth > 300;
+  // نفس ترتيب الفولدرات على كل الأحجام (جوال، آيباد، لابتوب) — Skills
+  // وContact دايماً بالصف الأخير، وAchievements+Projects مع بعض
+  const useWideOrder = true;
   const wideFolderOrder = { about: 1, achievements: 2, projects: 3, skills: 4, contact: 5 };
 
   desktopIconsEl.querySelectorAll(".folder-icon:not(.is-widget)").forEach((el) => {
