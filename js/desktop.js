@@ -28,7 +28,7 @@ const IMAGE_WIDGET_SRC = "assets/icons/widget-photo.jpg";
 
 const FOLDERS = DESKTOP_ITEMS.filter((item) => item.type === "folder");
 
-const SCREEN_RECT = { xPct: 0.143, yPct: 0.13, wPct: 0.724, hPct: 0.69 };
+const SCREEN_RECT = { xPct: 0.154, yPct: 0.122, wPct: 0.704, hPct: 0.691 };
 const WINDOW_SIZE_OVERRIDES = {
   about: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
   skills: { widthRatio: 0.94, maxWidth: 700, heightRatio: 0.9, maxHeight: 540 },
